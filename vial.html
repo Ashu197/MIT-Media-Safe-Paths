@@ -1,0 +1,265 @@
+<!doctype html>
+	<head>
+        <meta charset="UTF-8">
+		<link rel="stylesheet" href="css/style.v2.css">
+        <link rel="stylesheet" href="css/topnav.css">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="shortcut icon" href="https://www.pathcheck.org/hubfs/Favicon.png">
+		<title>Vial Signed Certificate Proposal</title>
+
+        <!-- Global site tag (gtag.js) - Google Analytics -->
+        <script async src="https://www.googletagmanager.com/gtag/js?id=G-DTDMHW3NV6"></script>
+        <script>
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+            gtag('config', 'G-DTDMHW3NV6');
+        </script>
+	</head>
+	<body>
+        <div class="topnav">
+            <div class="topnavContainer">
+              <a class="active" href="index.html">Signers</a>
+              <a href="verify.html"><span class="xs-hidden">Universal </span>Verifier</a>
+              <a class="xs-hidden" href="debug.html">QR Debugger</a>
+              <a class="xs-hidden" href="https://github.com/Path-Check/paper-cred-demo">Source Code</a>
+              <a href="https://github.com/Path-Check/paper-cred"><span class="xs-hidden"> QR </span>Specs</a>
+              <a href="http://vaccine-docs.pathcheck.org"><span class="xs-hidden">Vaccine </span>Docs</a>
+              <a class="xs-hidden" href="http://pathcheck.org">About PathCheck</a>
+            </div>
+        </div>
+      
+        <div class="subnav">
+            <div class="subnavContainer">
+                <a href="index.v5.html">PCF<span class="xs-hidden">'s 4 QRs</span></a>
+                <a href="eu.dgc.html">EU<span class="xs-hidden"> Covid Pass</span></a>
+                <a href="icao.html">ICAO<span class="xs-hidden"> Seals</span></a>
+                <a href="cowin.html">DIVOC<span class="xs-hidden">/India</span></a>
+                <a class="xs-hidden" href="opencerta.html"><span class="xs-hidden">Open</span>Certa</a>
+                <a class="active" href="vial.html">Vial<span class="xs-hidden"> Label</span></a>
+                <a href="us.ma.id.html"><span class="xs-hidden">Mass </span>ID</a>
+                <a href="banknote.html">Cash<span class="xs-hidden"> Bills</span></a>
+            </div>
+        </div>
+
+        <div class="center">
+            <h1>Moderna's Verifiable Vial</h1>
+            <div class="full-div">
+                <div class="two-quarter">
+                    <h4>Vial Information</h4>
+                    <table>
+                        <tr><td>Manuf</td><td><input id="qr-manuf" type="text" placeholder="Pfizer, Moderna, ..."/></td></tr>
+                        <tr><td>Product</td><td><input id="qr-product" type="text" placeholder="COVID-19"/></td></tr>
+                        <tr><td>Lot#</td><td><input id="qr-lot" type="text" placeholder="012L20A, ..."/></td></tr>
+                        <tr><td>NDC</td><td><input id="qr-ndc" type="text" placeholder="59267-1000-1, ..."/></td></tr>
+                        <tr><td>Expiration</td><td><input id="qr-exp" type="text" placeholder="YYYYMMDD"/></td></tr>
+                        <tr><td>Beyond Use</td><td><input id="qr-bud" type="text" placeholder="YYYYMMDD"/></td></tr>
+                    </table>
+                    <h4>Optional Information</h4>
+                    <table>
+                        <tr><td>Route</td><td><input id="qr-route" type="text" placeholder="C38238, C38276, ..."/></td></tr>
+                        <tr><td>Dosage (ul)</td><td><input id="qr-dose" type="text" placeholder="1000, 500, ..."/></td></tr>
+                        <tr><td>Doses (#)</td><td><input id="qr-doses" type="text" placeholder="10, ..."/></td></tr>
+                        <tr><td>Serial #</td><td><input id="qr-serial" type="text" placeholder="Pfizer, Moderna, ..."/></td></tr>
+                    </table> 
+                </div>
+                <div class="two-quarter">
+                    <h4>Design Restrictions</h4>
+                    <ul>
+                        <li>Must be printable to 8x8mm curved area</li>
+                        <li>Must be readable by a regular phone</li>
+                    </ul>
+
+                    <h4>Benefits</h4>
+                    <ul>
+                        <li>Streamline text input</li>
+                        <li>Trace Vial to shot</li>
+                        <li>Easy to track counterfeiters</li>
+                    </ul>
+                    <a href="https://lh3.googleusercontent.com/9HKRm5Sgt8Hc-eOiQDvGpc4fcEfd2y9oaJN0Fk-JUFD5qaeD2ib2EVvg25_mifdb0jAqfX-eeZAyCx4NBY-epQzvN9btBxhEJ0uOLNAnHOgXMm-YQWn2zwnZZB9ht6xg6Q2S2vjv-wk=w2400?source=screenshot.guru"> <img src="https://lh3.googleusercontent.com/9HKRm5Sgt8Hc-eOiQDvGpc4fcEfd2y9oaJN0Fk-JUFD5qaeD2ib2EVvg25_mifdb0jAqfX-eeZAyCx4NBY-epQzvN9btBxhEJ0uOLNAnHOgXMm-YQWn2zwnZZB9ht6xg6Q2S2vjv-wk=w200-h200-p-k" /> </a>
+                </div>
+                
+                <div class="quarter">
+                    <h4>Credentials</h4>
+                    <label for="privkey">Private Key</label><br/>
+<textarea id="privkey" rows="10" style="width: 100%;">-----BEGIN EC PARAMETERS-----
+BgUrgQQACg==
+-----END EC PARAMETERS-----
+-----BEGIN EC PRIVATE KEY-----
+MHQCAQEEIPWKbSezZMY1gCpvN42yaVv76Lo47FvSsVZpQl0a5lWRoAcGBSuBBAAK
+oUQDQgAE6DeIun4EgMBLUmbtjQw7DilMJ82YIvOR2jz/IK0R/F7/zXY1z+gqvFXf
+DcJqR5clbAYlO9lHmvb4lsPLZHjugQ==
+-----END EC PRIVATE KEY-----</textarea>
+                    <br><br>
+                    <label for="pubkey">Public Key</label>
+                    <textarea id="qr-link" rows="1" cols="30">1A9.PCF.PW</textarea>
+                </div>
+            </div>
+            <div class="full-div"></div>
+            <div class="four-quarter">
+                <br>
+                <button class="qr-btn" onclick="generateQRCodes()">Create Certificates</button>
+                <br>
+            </div>
+            <div class="full-div">
+                <div class="two-quarter">
+                    <h4 id="qr-vial-code-label">QR Format</h4>
+                    <canvas id="qr-vial-code"></canvas><br/>
+                </div>
+                <div class="two-quarter">
+                    <h4 id="qr-vial-pdf-label">PDF 417 Format</h4>
+                    <canvas id="qr-vial-pdf"></canvas><br/>
+                </div>
+                <div class="quarter xs-hidden">
+                    <label for="verify">Verify a QR Code</label>
+                    <textarea id="qr-verify" rows="10" cols="33" placeholder="cred:type:version:signature:pubkey:payload"></textarea>
+                    <br><br>
+                    <button class="qr-btn" onclick="verifyQRCode()">Verify</button>
+                    <br><br>
+                    <pre>cred:<span class='protocol'>type:version</span>:<span class='signature'>Signature</span>:<span class='pub-key'>PubKey</span>:<span class='message'>Payload</span></pre>
+                    <pre id="qr-verify-result"></pre>
+                    <pre id="qr-verify-verified"></pre>
+                </div>
+            </div>
+            <div class="full-div">
+                <div class="two-quarter">
+                    <pre id="qr-vial-result"></pre>
+                    <pre id="qr-vial-bytes" class="xs-hidden"></pre>
+                </div>
+                <div class="two-quarter">
+                </div>
+                <div class="quarter xs-hidden">
+                </div>
+            </div>
+        </div>
+
+        <div class="footer">
+            <div class="footerContainer">
+              <img src="https://www.pathcheck.org/hubfs/pathcheck-foundation-logo-white.svg" alt="pathcheck-foundation-logo-white" width="264" style="width: 264px; max-width: 264px; margin: 0px 0px 5px;">
+              <span style="font-size: 14px;"> 
+                <br>©2021. PathCheck Foundation – a 501(c)(3) nonprofit.
+                <br>Content is distributed under the Creative Commons CC-BY License unless otherwise stated. PathCheck is a trademark of PathCheck Foundation.
+              </span>
+            </div>
+        </div>
+        
+        <script src="js/qrcode.min.js"></script>
+    
+        <script src="js/libbcmath.js" type="text/javascript"></script>
+        <script src="js/bcmath.js" type="text/javascript"></script>
+        <script src="js/pdf417.js" type="text/javascript"></script>
+
+        <script src="js/cred-sdk.min.js"></script>
+        <script src="js/pcf-utils.js"></script>
+        <script src="js/ui-utils.js"></script>
+
+		<script>
+            function e(elem) { return document.getElementById(elem); }
+
+            function getValueArray(elemArray) {
+                const fields = elemArray.map(function(elemId) {
+                    return e(elemId).value;
+                })
+                return fields;
+            }
+
+            function clearQR(elemPrefix) {
+                e(elemPrefix+'-code').getContext('2d').clearRect(0, 0, e(elemPrefix+'-code').width, e(elemPrefix+'-code').height);
+                e(elemPrefix+'-result').innerHTML = "";
+                e(elemPrefix+'-bytes').innerHTML = "";
+            }
+
+            async function clear() {
+                clearQR('qr-vial');
+            }
+
+            function signAndDisplayQR(elemPref, _type, _version, priKeyPEM, pubKeyId, payloadValueArray) {
+                CRED.signAndPack(_type, _version, priKeyPEM, pubKeyId, payloadValueArray).then(uri => {
+                    PCFUtils.debugURI(uri).then( debugInfo => {
+                        UIUtils.drawsQR(elemPref, uri, debugInfo);
+
+                        CRED.unpackAndVerify(uri).then(result => {
+                            UIUtils.drawVerifiedSymbol(elemPref+'-code',result);
+                        });
+                    });
+                });
+            }
+
+            function generateQRCodes() {
+                gtag('event', 'generateQR');
+
+                clear();
+
+                // Where to Download the public key
+                const pubKeyLink = e("qr-link").value.trim().replace("http://","");
+
+                // PEM code of the private key
+                const priKeyPEM = e('privkey').value;
+
+                const valueArray = [
+                    "qr-manuf",
+                    "qr-product",
+                    "qr-lot",
+                    "qr-ndc", 
+                    "qr-exp",
+                    "qr-bud",
+                    "qr-route",
+                    "qr-dose",
+                    "qr-doses",
+                    "qr-serial",
+                ];
+
+                signAndDisplayQR("qr-vial", "vial", "1", priKeyPEM, pubKeyLink, getValueArray(valueArray));
+            }
+
+            function verifyQRCode() {
+                gtag('event', 'verifyQR');
+                
+                PCFUtils.debugParseURI(e("qr-verify").value).then(result => {
+                    e("qr-verify-result").innerHTML = result;
+                });
+                PCFUtils.debugVerify(e("qr-verify").value).then(debug => {
+                    e('qr-verify-verified').innerHTML = debug;
+                });
+            }
+
+            function onScanSuccess(qrMessage) {
+                e("qr-verify").value = qrMessage;
+                verifyQRCode();
+            }
+
+            function onScanFailure(error) {
+                // handle scan failure, usually better to ignore and keep scanning
+                console.warn(`QR error = ${error}`);
+            }
+        </script>
+        
+        <script>
+            function loadDemo() {
+                e("qr-manuf").value = "Moderna"; 
+                e("qr-product").value = "COVID-19"; 
+                e("qr-lot").value = "012L20A"; 
+                e("qr-ndc").value = "80777-273-10"; 
+                e("qr-exp").value = "20210501"; 
+                e("qr-bud").value = "20210208"; 
+                e("qr-route").value = "C28161"; 
+                e("qr-dose").value = "500";
+                e("qr-doses").value = "10";
+                e("qr-serial").value = "701861";
+            }
+
+            loadDemo();
+        </script>
+
+        <script>
+            async function preloadKey() {
+                CRED.resolveKey(e("qr-link").value);
+            }
+            window.onload = function() {
+                preloadKey();
+            }
+        </script>
+	</body>
+</html>
+
+

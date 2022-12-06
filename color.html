@@ -1,0 +1,267 @@
+<!doctype html>
+	<head>
+        <meta charset="UTF-8">
+		<link rel="stylesheet" href="css/style.v2.css">
+        <link rel="stylesheet" href="css/topnav.css">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="shortcut icon" href="https://www.pathcheck.org/hubfs/Favicon.png">
+		<title>Massachusetts's Color Vaccine Record to Verifiable QR</title>
+
+        <!-- Global site tag (gtag.js) - Google Analytics -->
+        <script async src="https://www.googletagmanager.com/gtag/js?id=G-DTDMHW3NV6"></script>
+        <script>
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+            gtag('config', 'G-DTDMHW3NV6');
+        </script>
+	</head>
+	<body>
+        <div class="topnav">
+            <div class="topnavContainer">
+              <a class="active" href="index.html">Signers</a>
+              <a href="verify.html"><span class="xs-hidden">Universal </span>Verifier</a>
+              <a class="xs-hidden" href="debug.html">QR Debugger</a>
+              <a class="xs-hidden" href="https://github.com/Path-Check/paper-cred-demo">Source Code</a>
+              <a href="https://github.com/Path-Check/paper-cred"><span class="xs-hidden"> QR </span>Specs</a>
+              <a href="http://vaccine-docs.pathcheck.org"><span class="xs-hidden">Vaccine </span>Docs</a>
+              <a class="xs-hidden" href="http://pathcheck.org">About PathCheck</a>
+            </div>
+        </div>
+      
+        <div class="subnav">
+            <div class="subnavContainer">
+                <a href="index.v5.html">PCF<span class="xs-hidden">'s 4 QRs</span></a>
+                <a href="eu.dgc.html">EU<span class="xs-hidden"> Covid Pass</span></a>
+                <a class="active" href="color.html"><span class="xs-hidden">Color</a>
+                <a href="icao.html">ICAO<span class="xs-hidden"> Seals</span></a>
+                <a href="cowin.html">DIVOC<span class="xs-hidden">/India</span></a>
+                <a href="liberty.html">IBM/NY<span class="xs-hidden"> Excelsior</span></a>
+                <a class="xs-hidden" href="opencerta.html"><span class="xs-hidden">Open</span>Certa</a>
+                <a href="vial.html">Vial<span class="xs-hidden"> Label</span></a>
+                <a href="us.ma.id.html"><span class="xs-hidden">Mass </span>ID</a>
+                <a href="banknote.html">Cash<span class="xs-hidden"> Bills</span></a>
+            </div>
+        </div>
+
+        <div class="center">
+            <h1>Massachusetts's Color Vaccine Record to Verifiable QR</h1>
+            <div class="full-div">
+                
+                <div class="four-quarter-left"> 
+                    <br><br>
+                    <h4>Insert your Vaccination history URL (you received it as an SMS)</h4>
+                    <br>
+                    <table>
+                        <tr><td><input id="qr-color-url" type="text" placeholder="https://www.color.com/vaccine/vaccinations/XXXXXXXXXXX?claim_token=YYYYYYYYYYYYYYY"/></td></tr>
+                    </table>
+                    <br><br>
+                </div>
+                
+                <div class="quarter"  style="display: none;">
+                    <h4>CRED Credentials</h4>
+                    <label for="privkey">Private Key</label><br/>
+                    <textarea id="privkey" rows="7" style="width: 100%;">-----BEGIN EC PARAMETERS-----
+BgUrgQQACg==
+-----END EC PARAMETERS-----
+-----BEGIN EC PRIVATE KEY-----
+MHQCAQEEIPWKbSezZMY1gCpvN42yaVv76Lo47FvSsVZpQl0a5lWRoAcGBSuBBAAK
+oUQDQgAE6DeIun4EgMBLUmbtjQw7DilMJ82YIvOR2jz/IK0R/F7/zXY1z+gqvFXf
+DcJqR5clbAYlO9lHmvb4lsPLZHjugQ==
+-----END EC PRIVATE KEY-----</textarea>
+
+                    <label for="pubkey">Public KeyID</label><br/>
+                    <textarea id="qr-link" rows="1" cols="30">1A9.PCF.PW</textarea>
+                 </div>
+            </div> 
+            <div class="full-div"></div>
+            <div class="four-quarter">
+                <br>
+                <button class="qr-btn" onclick="generateQRCodes()">Generate Credentials</button>
+                <br><br>
+            </div>
+            <div class="full-div">
+                <div class="third">
+                    <h4>First Dose</h4>
+                    <canvas id="qr-cred-first-code"></canvas><br/>
+                    <pre id="qr-cred-first-result"></pre>
+                    <pre id="qr-cred-first-bytes"  class="xs-hidden"></pre>
+                </div>
+                <div class="third">
+                    <h4>Second Dose</h4>
+                    <canvas id="qr-cred-second-code"></canvas><br/>
+                    <pre id="qr-cred-second-result"></pre>
+                    <pre id="qr-cred-second-bytes"  class="xs-hidden"></pre>
+                </div>
+                <div class="third">
+                    <h4>Status</h4>
+                    <canvas id="qr-cred-status-code"></canvas><br/>
+                    <pre id="qr-cred-status-result"></pre>
+                    <pre id="qr-cred-status-bytes"  class="xs-hidden"></pre>
+                </div>
+            </div>
+        </div>
+
+        <div class="footer">
+            <div class="footerContainer">
+              <img src="https://www.pathcheck.org/hubfs/pathcheck-foundation-logo-white.svg" alt="pathcheck-foundation-logo-white" width="264" style="width: 264px; max-width: 264px; margin: 0px 0px 5px;">
+              <span style="font-size: 14px;"> 
+                <br>©2021. PathCheck Foundation – a 501(c)(3) nonprofit.
+                <br>Content is distributed under the Creative Commons CC-BY License unless otherwise stated. PathCheck is a trademark of PathCheck Foundation.
+              </span>
+              
+            </div>
+        </div>
+        
+        <script src="js/qrcode.min.js"></script>
+
+        <script src="js/libbcmath.js" type="text/javascript"></script>
+        <script src="js/bcmath.js" type="text/javascript"></script>
+        <script src="js/pdf417.js" type="text/javascript"></script>
+
+        <script src="js/pcf-utils.js"></script>
+        <script src="js/ui-utils.js"></script>
+
+        <script src="js/cred-sdk.min.js"></script>
+
+		<script>
+            function e(elem) { return document.getElementById(elem); }
+
+            function signAndDisplayQR(elemPref, _type, _version, priKeyPEM, pubKeyId, payloadValueArray) {
+                const uri = CRED.signAndPack(_type, _version, priKeyPEM, pubKeyId, payloadValueArray).then(uri => {
+                    PCFUtils.debugURI(uri).then( debugInfo => {
+                        UIUtils.renderQR(elemPref, uri);
+
+                        // Updates screen elements. 
+                        e(elemPref+"-result").innerHTML= debugInfo;
+                        
+                        CRED.unpackAndVerify(uri).then(result => {
+                            UIUtils.drawVerifiedSymbol(elemPref+'-code',result);
+                        });
+                    });
+                });
+            }
+
+            function downloadColorRecord(userid, token) {
+                console.log("https://home.color.com/api/v1/vaccination_appointments/"+userid+"?claim_token="+token);
+                
+                let client = new XMLHttpRequest();
+                client.open('GET', "https://pathcheck-cors-proxy.herokuapp.com/home.color.com/api/v1/vaccination_appointments/"+userid+"?claim_token="+token, false);
+                client.send();
+
+                return JSON.parse(client.response);
+            }
+
+            function convertPreviousApptToBadgeArray(data) { 
+                if (data.previous_appointment && data.previous_appointment.vaccination_record) {
+                    let firstDate = new Date(data.previous_appointment.vaccination_record.vaccination_date);
+                    let secondDate = new Date(data.vaccination_record.vaccination_date);
+
+                    const diffTime = Math.abs(secondDate - firstDate);
+                    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24)); 
+
+                    return [
+                        data.previous_appointment.vaccination_record.vaccination_date, //date
+                        data.previous_appointment.vaccination_record.manufacturer,  // manuf
+                        data.vaccination_record.type.replaceAll(data.vaccination_record.manufacturer + " ", ""), // product
+                        data.previous_appointment.vaccination_record.substance_lot_number, // type
+                        diffDays.toString(), //doses
+                        , //vaccinee
+                        , //route
+                        data.previous_appointment.vaccination_record.administration_site, //site
+                        (data.previous_appointment.vaccination_record.administered_amount_in_ml*1000).toString(), //dose
+                        data.first_name + " " + data.last_name,  //name
+                        data.birthday //dob
+                    ];
+                } else {
+                    return undefined;
+                }
+            }
+
+            function convertColorToBadgeArray(data) { 
+                if (data && data.vaccination_record) {
+                    let diffDays = "";
+                    if (data.next_appointment) {
+                        let firstDate = new Date(data.previous_appointment.vaccination_record.vaccination_date);
+                        let secondDate = new Date(data.next_appointment);
+
+                        const diffTime = Math.abs(secondDate - firstDate);
+                        diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24)); 
+                    }
+                    
+                    return [
+                        data.vaccination_record.vaccination_date,
+                        data.vaccination_record.manufacturer, 
+                        data.vaccination_record.type.replaceAll(data.vaccination_record.manufacturer + " ", ""), // product
+                        data.vaccination_record.substance_lot_number, 
+                        diffDays,
+                        , //vaccinee
+                        , //route
+                        data.vaccination_record.administration_site, //site
+                        (data.vaccination_record.administered_amount_in_ml*1000).toString(), //dose
+                        data.first_name + " " + data.last_name,  //name
+                        data.birthday //dob
+                    ];
+                } else {
+                    return undefined;
+                }
+            }
+
+            function getInitialsAndYear(fullName, dob) {
+                var names = fullName.split(' '),
+                    initials = names[0].substring(0, 1).toUpperCase();
+                
+                if (names.length > 1) {
+                    initials += names[names.length - 1].substring(0, 1).toUpperCase();
+                }
+
+                return initials + dob.substring(2,4);
+            }
+
+            function getDoses(badgeArrayCurr, badgeArrayPrevious) {
+                if (!badgeArrayCurr) return "0";
+                if (badgeArrayCurr.next_appointment) return "1";
+                return "2";
+            }
+
+            function generateQRCodes() {
+                gtag('event', 'generateQR');
+
+                // Where to Download the public key
+                const pubKeyLink = e("qr-link").value.trim().replace("http://","");
+
+                // PEM code of the private key
+                const priKeyPEM = e('privkey').value;
+
+                let urlMain = e('qr-color-url').value.split("?")[0];
+                let queryString = e('qr-color-url').value.split("?")[1];
+
+                let userid = urlMain.substring(urlMain.lastIndexOf('/')+1);
+                let token = new URLSearchParams(queryString).get('claim_token')
+
+                colorRecord = downloadColorRecord(userid, token);
+
+                // Badge QR
+                const badgeArrayCurr = convertColorToBadgeArray(colorRecord);
+                
+                // Badge QR
+                const badgeArrayPrevious = convertPreviousApptToBadgeArray(colorRecord);
+                
+                if (badgeArrayPrevious && badgeArrayCurr) {
+                    signAndDisplayQR("qr-cred-first", "badge","2", priKeyPEM, pubKeyLink, badgeArrayPrevious);
+                    signAndDisplayQR("qr-cred-second", "badge","2", priKeyPEM, pubKeyLink, badgeArrayCurr);
+                } else if (!badgeArrayPrevious && badgeArrayCurr) {
+                    signAndDisplayQR("qr-cred-first", "badge","2", priKeyPEM, pubKeyLink, badgeArrayCurr);
+                } else {
+                    
+                }
+
+                const initals = getInitialsAndYear(badgeArrayCurr[9], badgeArrayCurr[10]);
+                const statusArray = [getDoses(badgeArrayCurr,badgeArrayPrevious),,initals];
+                signAndDisplayQR("qr-cred-status", "status","2", priKeyPEM, pubKeyLink, statusArray);
+            }
+        </script>
+	</body>
+</html>
+
+

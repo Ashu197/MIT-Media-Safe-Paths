@@ -1,0 +1,268 @@
+<!doctype html>
+	<head>
+        <meta charset="UTF-8">
+		<link rel="stylesheet" href="css/style.v2.css">
+        <link rel="stylesheet" href="css/topnav.css">
+        <link rel="shortcut icon" href="https://www.pathcheck.org/hubfs/Favicon.png">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+		<title>Verifiable Credential Debugger</title>
+
+        <!-- Global site tag (gtag.js) - Google Analytics -->
+        <script async src="https://www.googletagmanager.com/gtag/js?id=G-DTDMHW3NV6"></script>
+        <script>
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+            gtag('config', 'G-DTDMHW3NV6');
+        </script>
+
+        <script src="js/qrcode.min.js"></script>
+
+        <script src="js/pcf-utils.js"></script>
+        <script src="js/ui-utils.js"></script>
+
+        <script src="js/cred-sdk.min.js"></script>
+        <script src="js/dcc-sdk.min.js"></script>
+        <script src="js/he.js"></script>
+        <script src="js/ajv7.min.js"></script>
+
+        <script src="js/divoc-sdk.min.js"></script>
+        <script src="js/json-beautify.min.js"></script>
+        <script src="js/bbs-cbld-sdk.min.js"></script>
+        <script src="js/bbs-jxt-sdk.min.js"></script>
+        <script src="js/eddsa-jxt-sdk.min.js"></script>
+        <script src="js/shc-sdk.min.js"></script>
+        <script src="js/vds-sdk.min.js"></script>
+	</head>
+	<body>
+        <div class="topnav">
+            <div class="topnavContainer">
+              <a href="index.html">Signers</a>
+              <a href="verify.html"><span class="xs-hidden">Universal </span>Verifier</a>
+              <a class="xs-hidden active" href="debug.html">QR Debugger</a>
+              <a class="xs-hidden" href="https://github.com/Path-Check/paper-cred-demo">Source Code</a>
+              <a href="https://github.com/Path-Check/paper-cred"><span class="xs-hidden"> QR </span>Specs</a>
+              <a href="http://vaccine-docs.pathcheck.org"><span class="xs-hidden">Vaccine </span>Docs</a>
+              <a class="xs-hidden" href="http://pathcheck.org">About PathCheck</a>
+            </div>
+        </div>
+
+        <div class="center">
+            <h1>Verifiable Credential Debugger</h1>
+            <div class="full-div">
+                <div class="four-quarter-left">
+                    <div>
+                        <h4>Paste the QR Code here:</h4>
+                        <textarea id="qr-verify" rows="10" placeholder="cred:type:version:signature:pubkey:payload
+HC1:payload">HC1:6BFOXN%TSMAHN-H+XO5XF7:UY%FJ.G0II:3O6NRBD295QJQC8G9Z3RRAC/GPWBI$C9UDBQEAJJKHHGEC8.-B97U: K8*NHQ2VAP1US1Q7OKHHUEPOP%WUXQ72QETZU3UQRVULKHWWU:16Q8Q*7R-PP9$PB/9OK5JWEMN1/9VSL1Y813.UNNUR+UK0VF/94O5%ZE/NEVTEJAVX5NGTUY*U9/9-3APF6:66A$QZ76LZ6Q59HEDN*I4OIMEDTJCJKDLEDL9CVTAUPIAK29VC4/D-FD8RDVTADYI7VCE8C09DC8CMCI7UJ$JCDVC$XINYJ3A41VCSWC%PD:NKC7D$JCYJC1VCW CTCKY004SIVOHD C9DG4:GXMRD$S+A5M2FNW04QK7TSJWODTUOQ2CVE2JAWH6 $U0QPSXQ:PI*VIUXFOH68ZUOP6OH6XO9IE5IVU4S2PQONTI4L6OUC6VH6ZL4XP0N6F1L3RVT5BZ-H67NMWE7*UHS6NYHY8ES$ILVCK4L2+1M2LDD9GQS4.R1N52FVNCU8+NV6H2+9/$V:%G2.2.$JPJJPKK6U94QMXLMQAL1NJV8U3CW:BP40TX7A$B44W8:VD5J4*101AI</textarea>
+                        <br><br>
+                        <button class="qr-btn" onclick="verifyQRCode()">Verify</button>
+                        <br><br>
+                        <pre id="qr-verify-brand"></pre>
+                        <pre id="qr-verify-result" style="min-height: 300px;"></pre>
+                        <pre id="qr-verify-verified"></pre>
+                    </div>
+                </div>
+
+                <div class="quarter">
+                    <label for="qr-linkEU">Public kID</label><br/>
+                    <textarea id="qr-linkEU" rows="1" cols="30">Rjene8QvRwA=</textarea>
+
+                    <label for="pubkey">PublicKey  Certificate</label><br/>
+                    <textarea id="pubkey" rows="7" style="width: 100%;">-----BEGIN CERTIFICATE-----
+MIIBYDCCAQYCEQCAG8uscdLb0ppaneNN5sB7MAoGCCqGSM49BAMCMDIxIzAhBgNV
+BAMMGk5hdGlvbmFsIENTQ0Egb2YgRnJpZXNsYW5kMQswCQYDVQQGEwJGUjAeFw0y
+MTA0MjcyMDQ3MDVaFw0yNjAzMTIyMDQ3MDVaMDYxJzAlBgNVBAMMHkRTQyBudW1i
+ZXIgd29ya2VyIG9mIEZyaWVzbGFuZDELMAkGA1UEBhMCRlIwWTATBgcqhkjOPQIB
+BggqhkjOPQMBBwNCAARkJeqyO85dyR+UrQ5Ey8EdgLyf9NtsCrwORAj6T68/elL1
+9aoISQDbzaNYJjdD77XdHtd+nFGTQVpB88wPTwgbMAoGCCqGSM49BAMCA0gAMEUC
+IQDvDacGFQO3tuATpoqf40CBv09nfglL3wh5wBwA1uA7lAIgZ4sOK2iaaTsFNqEN
+AF7zi+d862ePRQ9Lwymr7XfwVm0=
+-----END CERTIFICATE-----</textarea>
+                    <br><br>
+                </div>
+            </div>
+        </div>
+
+        <div class="footer">
+            <div class="footerContainer">
+              <img src="https://www.pathcheck.org/hubfs/pathcheck-foundation-logo-white.svg" alt="pathcheck-foundation-logo-white" width="264" style="width: 264px; max-width: 264px; margin: 0px 0px 5px;">
+              <span style="font-size: 14px;"> 
+                <br>©2021. PathCheck Foundation – a 501(c)(3) nonprofit.
+                <br>Content is distributed under the Creative Commons CC-BY License unless otherwise stated. PathCheck is a trademark of PathCheck Foundation.
+              </span>
+              
+            </div>
+        </div>
+       
+		<script>
+            function replacer(key, value) {
+                if  (value instanceof Map) {
+                    return {
+                        'Map': Array.from(value.entries()), // or with spread: value: [...value]
+                    };
+                } else {
+                    return value;
+                }
+            }
+            function reviver(key, value) {
+                if(typeof value === 'object' && value !== null) {
+                    if (value.dataType === 'Map') {
+                    return new Map(value.value);
+                    }
+                }
+                return value;
+            }
+
+            function e(elem) { return document.getElementById(elem); }
+
+            function schemaValidator(version) {
+                var ajv = new ajv7.default({strict: "log", validateFormats: false});
+
+                if (!version) {
+                    version = "1.3.0";
+                }
+
+                let name = ["0.1.0","1.0.0","1.0.1","1.1.0","1.2.0"].includes(version) ? "DGC" : "DCC"; 
+
+                let client = new XMLHttpRequest();
+                client.open('GET', 'https://raw.githubusercontent.com/ehn-dcc-development/ehn-dcc-schema/release/'+version+'/'+name+'.combined-schema.json', false);
+                client.setRequestHeader("Accept", "application/vnd.github.v3+json");
+                client.send();
+
+                const schema = JSON.parse(client.response); 
+                delete schema['$schema'];
+                return ajv.compile(schema);
+            }
+
+            async function getEUPayload(cwt) {
+                if (cwt instanceof Map) {
+                    return await DCC.parseCWT(cwt);
+                } 
+                return cwt;
+            }
+
+            function verifyQRCode() {
+                gtag('event', 'debugQR');
+
+                if (e('pubkey').value.includes('CERTIFICATE')) {
+                    let cache = {}
+                    cache[e('qr-linkEU').value] = 
+                        e('pubkey').value.replace("-----BEGIN CERTIFICATE-----", "").replace("-----END CERTIFICATE-----", "").replace(/\n/g,'');
+
+                        console.log(cache);
+                    DCC.addCachedCerts(cache);
+                    let cache2 = {}
+                    cache2["Rjene8QvRwBx9bytJQq5VY8+Qai4X4x0OpENSrX1sqk="] = e('pubkey').value;
+                    VDS.addCachedCerts(cache2);
+                } else {
+                    let cache = {}
+                    cache[e('qr-linkEU').value] = 
+                        e('pubkey').value.replace("-----BEGIN PUBLIC KEY-----", "").replace("-----END PUBLIC KEY-----", "").replace(/\n/g,'');
+                    DCC.addCachedKeys(cache);
+                }
+
+                e("qr-verify-brand").innerHTML = "";
+                e("qr-verify-result").innerHTML = "Checking";
+                e('qr-verify-verified').innerHTML = "";
+
+                const qr = e("qr-verify").value;
+                if (qr === "" && qr == null) {
+                    e('qr-verify-verified').innerHTML = "Certificate not found. ";
+                    return;
+                }
+
+                if (qr.startsWith('CRED:')) {
+                    e("qr-verify-brand").innerHTML = "PathCheck Verifiable QR"
+                    PCFUtils.debugParseURI(qr).then(result => {
+                        e("qr-verify-result").innerHTML = result;
+                    });
+                    PCFUtils.debugVerify(qr).then(debug => {
+                        e('qr-verify-verified').innerHTML = debug;
+                    });
+                } else if (qr.startsWith('CBLD:')) {
+                    BBS_CBLD.unpackAndVerify(qr).then(json => {
+                        if (json) {
+                            e("qr-verify-result").innerHTML = he.encode(beautify(json, null, 2, 80));
+                            e('qr-verify-verified').innerHTML = "Signature Verified ";
+                        } else {
+                            e("qr-verify-result").innerHTML = "Something is wrong with the payload";
+                            e('qr-verify-verified').innerHTML = "Could not Verify";
+                        }
+                    });
+                } else if (qr.startsWith('JXT:')) {
+                    e("qr-verify-result").innerHTML = "Something is wrong with the payload";
+                    e('qr-verify-verified').innerHTML = "Could not Verify";
+                    BBS_JXT.unpackAndVerify(qr).then(json => {
+                        if (json) {
+                            e("qr-verify-result").innerHTML = he.encode(beautify(json, null, 2, 80));
+                            e('qr-verify-verified').innerHTML = "Signature Verified ";
+                        } 
+                    });
+                    EDDSA_JXT.unpackAndVerify(qr).then(json => {
+                        if (json) {
+                            e("qr-verify-result").innerHTML = he.encode(beautify(json, null, 2, 80));
+                            e('qr-verify-verified').innerHTML = "Signature Verified ";
+                        } 
+                    });
+                } else if (qr.toUpperCase().startsWith('SHC:')) {
+                    SHC.unpackAndVerify(qr).then(verificationResult => {
+                        e("qr-verify-result").innerHTML = he.encode(beautify(verificationResult, null, 2, 80));
+                        if (verificationResult.status == "verified") {
+                            e('qr-verify-verified').innerHTML = "Signature Verified ";
+                        } else {
+                            e('qr-verify-verified').innerHTML = "Could not Verify";
+                        }
+                    });
+                } else if (qr.startsWith('HC1:')) {
+                    e("qr-verify-brand").innerHTML = "EU Digital Covid Certificate Verifiable QR"
+                    DCC.unpackAndVerify(qr).then(verificationResult => {
+                        e("qr-verify-result").innerHTML = he.encode(beautify(verificationResult, replacer, 2, 80));
+                        if (verificationResult.status == "verified") {
+                            getEUPayload(verificationResult.contents).then(payload => {
+                                const validator = schemaValidator(payload.ver);
+                                const valid = validator(payload);
+                                e('qr-verify-verified').innerHTML = "Signature Verified " + (valid? "and Schema is Valid" : " but Schema has errors " + JSON.stringify(validator.errors));
+                            });
+                        } else {
+                            e('qr-verify-verified').innerHTML = "Could not Verify";
+                        }
+                    });
+                } else if (qr.includes('did:india') || qr.includes('did:srilanka:moh') || qr.includes('did:philippines')) {
+                    e("qr-verify-brand").innerHTML = "Divoc Verifiable QR"
+                    DIVOC.verify(qr).then(result => {
+                        if (result.status == "verified") {
+                            e("qr-verify-result").innerHTML = he.encode(beautify(JSON.parse(qr), null, 2, 80));
+                            e('qr-verify-verified').innerHTML = "Signature Verified";
+                        } else {
+                            e("qr-verify-result").innerHTML = he.encode(beautify(JSON.parse(qr), null, 2, 80));
+                            e('qr-verify-verified').innerHTML = "Could not Verify";
+                        }
+                    });
+                } else if (qr.includes('did:hpass')) {
+                    e("qr-verify-brand").innerHTML = "Excelsior Pass Verifiable QR"
+                    e("qr-verify-result").innerHTML = he.encode(beautify(JSON.parse(qr), null, 2, 80));
+                    e('qr-verify-verified').innerHTML = "IBM's Pass verification has not been implemented yet.";
+                } else if (qr.includes('icao')) {
+                    e("qr-verify-brand").innerHTML = "ICAO Digital Seals"
+                    VDS.unpackAndVerify(qr).then(result => {
+                        if (result.status == "verified") {
+                            e("qr-verify-result").innerHTML = he.encode(beautify(result, null, 2, 80));
+                            e('qr-verify-verified').innerHTML = "Signature Verified";
+                        } else {
+                            e("qr-verify-result").innerHTML = he.encode(beautify(result, null, 2, 80));
+                            e('qr-verify-verified').innerHTML = "Could not Verify";
+                        }
+                    });
+                } else {
+                    e("qr-verify-brand").innerHTML = "No idea what this is"
+                    e("qr-verify-result").innerHTML = "";
+                    e('qr-verify-verified').innerHTML = "The payload type has not been implemented yet.";
+                }
+            }
+
+        </script>
+	</body>
+</html>
+
+

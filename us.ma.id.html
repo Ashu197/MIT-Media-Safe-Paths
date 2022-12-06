@@ -1,0 +1,417 @@
+<!doctype html>
+	<head>
+        <meta charset="UTF-8">
+		<link rel="stylesheet" href="css/style.v2.css">
+        <link rel="stylesheet" href="css/topnav.css">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="shortcut icon" href="https://www.pathcheck.org/hubfs/Favicon.png">
+		<title>Massachusetts Signed Driver's License Proposal</title>
+
+        <!-- Global site tag (gtag.js) - Google Analytics -->
+        <script async src="https://www.googletagmanager.com/gtag/js?id=G-DTDMHW3NV6"></script>
+        <script>
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+            gtag('config', 'G-DTDMHW3NV6');
+        </script>
+	</head>
+	<body>
+        <div class="topnav">
+            <div class="topnavContainer">
+              <a class="active" href="index.html">Signers</a>
+              <a href="verify.html"><span class="xs-hidden">Universal </span>Verifier</a>
+              <a class="xs-hidden" href="debug.html">QR Debugger</a>
+              <a class="xs-hidden" href="https://github.com/Path-Check/paper-cred-demo">Source Code</a>
+              <a href="https://github.com/Path-Check/paper-cred"><span class="xs-hidden"> QR </span>Specs</a>
+              <a href="http://vaccine-docs.pathcheck.org"><span class="xs-hidden">Vaccine </span>Docs</a>
+              <a class="xs-hidden" href="http://pathcheck.org">About PathCheck</a>
+            </div>
+        </div>
+      
+        <div class="subnav">
+            <div class="subnavContainer">
+                <a href="index.v5.html">PCF<span class="xs-hidden">'s 4 QRs</span></a>
+                <a href="eu.dgc.html">EU<span class="xs-hidden"> Covid Pass</span></a>
+                <a href="icao.html">ICAO<span class="xs-hidden"> Seals</span></a>
+                <a href="cowin.html">DIVOC<span class="xs-hidden">/India</span></a>
+                <a class="xs-hidden" href="opencerta.html"><span class="xs-hidden">Open</span>Certa</a>
+                <a href="vial.html">Vial<span class="xs-hidden"> Label</span></a>
+                <a class="active" href="us.ma.id.html"><span class="xs-hidden">Mass </span>ID</a>
+                <a href="banknote.html">Cash<span class="xs-hidden"> Bills</span></a>
+            </div>
+        </div>
+
+        <div class="center">
+            <h1>Verifiable Drivers License</h1>
+                
+            <div class="full-div">
+                <div class="third">
+                    <h4>License</h4>
+                    <table>
+                        <tr><td>Issue</td><td><input id="qr-dbd" type="text" placeholder="YYYYMMDD"/></td></tr>
+                        <tr><td>Expiration</td><td><input id="qr-dba" type="text" placeholder="YYYYMMDD"/></td></tr>
+
+                        <tr><td>Compl. Type</td><td><input id="qr-dda" type="text" placeholder="F, N, ..."/></td></tr>
+                        <tr><td>Rev Date</td><td><input id="qr-ddb" type="text" placeholder="YYYYMMDD"/></td></tr>
+                        <tr><td>Hazard Exp</td><td><input id="qr-ddc" type="text" placeholder="YYYYMMDD"/></td></tr>
+
+                        <tr><td>Audit Info</td><td><input id="qr-dcj" type="text" placeholder=""/></td></tr>
+                        <tr><td>Inventory Ctr</td><td><input id="qr-dck" type="text" placeholder=""/></td></tr>
+                        <tr><td>Customer ID</td><td><input id="qr-daq" type="text" placeholder=""/></td></tr>
+                        <tr><td>Discriminator</td><td><input id="qr-dcf" type="text" placeholder=""/></td></tr>
+                    </table>
+                    <h4>Jurisdiction</h4> 
+                    <table>  
+                        <tr><td>VehicleClass</td><td><input id="qr-dca" type="text" placeholder="2"/></td></tr>
+                        <tr><td>Restrictions</td><td><input id="qr-dcb" type="text" placeholder="Glasses, ..."/></td></tr>
+                        <tr><td>Privileges</td><td><input id="qr-dcd" type="text" placeholder="1A, 2A, ..."/></td></tr>
+                        
+                        <tr><td>Class Desc</td><td><input id="qr-dcp" type="text" placeholder="2"/></td></tr>
+                        <tr><td>Endor. Desc</td><td><input id="qr-dcq" type="text" placeholder="Glasses, ..."/></td></tr>
+                        <tr><td>Restr. Desc</td><td><input id="qr-dcr" type="text" placeholder="1A, 2A, ..."/></td></tr>
+                    </table>
+                    <h4>Federal</h4> 
+                    <table>  
+                        <tr><td>CommVehicle</td><td><input id="qr-dch" type="text" placeholder=""/></td></tr>
+
+                        <tr><td>VehicleClass</td><td><input id="qr-dcm" type="text" placeholder=""/></td></tr>
+                        <tr><td>Endorsement</td><td><input id="qr-dcn" type="text" placeholder=""/></td></tr>
+                        <tr><td>Restriction</td><td><input id="qr-dco" type="text" placeholder=""/></td></tr>
+
+                    </table>
+                </div>
+                
+                <div class="third">
+                    <h4>Driver</h4>
+                    <table>
+                        <tr><td>First Name</td><td><input id="qr-dac" type="text" placeholder="First Name ..."/></td></tr>
+                        <tr><td>Middl Name</td><td><input id="qr-dad" type="text" placeholder="Middle Name ..."/></td></tr>
+                        <tr><td>Last Name</td><td><input id="qr-dcs" type="text" placeholder="Last Name ..."/></td></tr>
+                        <tr><td>Given Name</td><td><input id="qr-dct" type="text" placeholder="Given Name ..."/></td></tr>
+                        <tr><td>Suffix</td><td><input id="qr-dcu" type="text" placeholder="Dr. Jr. ..."/></td></tr>
+                        
+                        <tr><td>DoB</td><td><input id="qr-dbb" type="text" placeholder="YYYYMMDD"/></td></tr>
+                        <tr><td>Gender</td><td><input id="qr-dbc" type="text" placeholder="Gender ..."/></td></tr>
+
+                        <tr><td>Lawful Stat</td><td><input id="qr-ddd" type="text" placeholder=""/></td></tr>
+                        <tr><td>Organ Donor</td><td><input id="qr-ddk" type="text" placeholder=""/></td></tr>
+                        <tr><td>Veteran</td><td><input id="qr-ddl" type="text" placeholder=""/></td></tr>
+
+                        <tr><td>Place Birth</td><td><input id="qr-dci" type="text" placeholder=""/></td></tr>          
+                        
+                        <tr><td>18Y Anniver</td><td><input id="qr-ddh" type="text" placeholder="YYYYMMDD"/></td></tr>
+                        <tr><td>19Y Anniver</td><td><input id="qr-ddi" type="text" placeholder="YYYYMMDD"/></td></tr>
+                        <tr><td>21Y Anniver</td><td><input id="qr-ddj" type="text" placeholder="YYYYMMDD"/></td></tr>
+                        <tr><td>ZVA</td><td><input id="qr-zva" type="text" placeholder="YYYYMMDD"/></td></tr>
+                    </table>
+                    
+                    <h4>Aliases</h4> 
+                    <table>  
+                        <tr><td>Last Name</td><td><input id="qr-dbn" type="text" placeholder="Last Name ..."/></td></tr>
+                        <tr><td>Given Name</td><td><input id="qr-dbg" type="text" placeholder="Given Name ..."/></td></tr>
+                        <tr><td>Suffix</td><td><input id="qr-dbs" type="text" placeholder="Dr. Jr. ..."/></td></tr>  
+                    </table>
+                </div>
+                
+                <div class="third">
+                    <h4>Characteristics</h4>
+                    <table>
+                        <tr><td>Eye Color</td><td><input id="qr-day" type="text" placeholder=""/></td></tr>
+                        <tr><td>Hair Color</td><td><input id="qr-daz" type="text" placeholder=""/></td></tr>
+                        <tr><td>Race</td><td><input id="qr-dcl" type="text" placeholder=""/></td></tr> 
+                        <tr><td>Height</td><td><input id="qr-dau" type="text" placeholder=""/></td></tr>
+                        <tr><td>WeightRange</td><td><input id="qr-dce" type="text" placeholder=""/></td></tr>
+                        <tr><td>Weight (lbs)</td><td><input id="qr-daw" type="text" placeholder=""/></td></tr>
+                        <tr><td>Weight (kgs)</td><td><input id="qr-dax" type="text" placeholder=""/></td></tr>
+                    </table>
+
+                    <h4>Location</h4>
+                    <table>
+                        <tr><td>Address Lin1</td><td><input id="qr-dag" type="text" placeholder="3rd St"/></td></tr>
+                        <tr><td>Address Lin2</td><td><input id="qr-dah" type="text" placeholder="Apt xx"/></td></tr>
+                        <tr><td>City</td><td><input id="qr-dai" type="text" placeholder="Somerville"/></td></tr>
+                        <tr><td>State</td><td><input id="qr-daj" type="text" placeholder="MA"/></td></tr>
+                        <tr><td>Zip</td><td><input id="qr-dak" type="text" placeholder="02141"/></td></tr>
+                        <tr><td>Country</td><td><input id="qr-dcg" type="text" placeholder="USA"/></td></tr>
+                    </table>
+
+                    <h4>Protocol</h4>
+                    <table>
+                        <tr><td>AAMVA Ver</td><td><input id="qr-aam-version" type="text" placeholder=""/></td></tr>
+                        <tr><td>Juris Version</td><td><input id="qr-version" type="text" placeholder=""/></td></tr>
+                        <tr><td>IIN</td><td><input id="qr-iin" type="text" placeholder=""/></td></tr>
+                    </table>
+                </div>
+                
+                <div class="quarter">
+                    <h4>Credentials</h4>
+                    <label for="privkey">Private Key</label><br/>
+<textarea id="privkey" rows="10" style="width: 100%;">-----BEGIN EC PARAMETERS-----
+BgUrgQQACg==
+-----END EC PARAMETERS-----
+-----BEGIN EC PRIVATE KEY-----
+MHQCAQEEIPWKbSezZMY1gCpvN42yaVv76Lo47FvSsVZpQl0a5lWRoAcGBSuBBAAK
+oUQDQgAE6DeIun4EgMBLUmbtjQw7DilMJ82YIvOR2jz/IK0R/F7/zXY1z+gqvFXf
+DcJqR5clbAYlO9lHmvb4lsPLZHjugQ==
+-----END EC PRIVATE KEY-----</textarea>
+                    <br><br>
+                    <label for="pubkey">Public Key</label>
+                    <textarea id="qr-link" rows="1" cols="30">1A9.PCF.PW</textarea>
+                </div>
+            </div>
+            <div class="four-quarter">
+                <br>
+                <button class="qr-btn" onclick="generateQRCodes()">Generate Credentials</button>
+                <br>
+            </div>
+            <div class="full-div">
+                <div class="two-quarter">
+                    <h4 id="qr-massid-code-label">QR Format</h4>
+                    <canvas id="qr-massid-code"></canvas><br/>
+                </div>
+                <div class="two-quarter">
+                    <h4  id="qr-massid-pdf-label">PDF 417 Format</h4>
+                    <canvas id="qr-massid-pdf"></canvas><br/>
+                </div>
+                <div class="quarter xs-hidden">
+                    <label for="verify">Verify a QR Code</label>
+                    <textarea id="qr-verify" rows="10" cols="33" placeholder="cred:type:version:signature:pubkey:payload"></textarea>
+                    <br><br>
+                    <button class="qr-btn" onclick="verifyQRCode()">Verify</button>
+                    <br><br>
+                    <pre>cred:<span class='protocol'>type:version</span>:<span class='signature'>Signature</span>:<span class='pub-key'>PubKey</span>:<span class='message'>Payload</span></pre>
+                    <pre id="qr-verify-result"></pre>
+                    <pre id="qr-verify-verified"></pre>
+                </div>    
+            </div>
+            <div class="full-div">
+                <div class="two-quarter">
+                    <pre id="qr-massid-result"></pre>
+                    <pre id="qr-massid-bytes" class="xs-hidden"></pre>
+                </div>
+                <div class="two-quarter"></div>
+                <div class="quarter"></div>
+            </div>
+        </div>
+
+        <div class="footer">
+            <div class="footerContainer">
+              <img src="https://www.pathcheck.org/hubfs/pathcheck-foundation-logo-white.svg" alt="pathcheck-foundation-logo-white" width="264" style="width: 264px; max-width: 264px; margin: 0px 0px 5px;">
+              <span style="font-size: 14px;"> 
+                <br>©2021. PathCheck Foundation – a 501(c)(3) nonprofit.
+                <br>Content is distributed under the Creative Commons CC-BY License unless otherwise stated. PathCheck is a trademark of PathCheck Foundation.
+              </span>
+              
+            </div>
+        </div>
+        
+        <script src="js/qrcode.min.js"></script>
+    
+        <script src="js/libbcmath.js" type="text/javascript"></script>
+        <script src="js/bcmath.js" type="text/javascript"></script>
+        <script src="js/pdf417.js" type="text/javascript"></script>
+
+        <script src="js/cred-sdk.min.js"></script>
+        <script src="js/pcf-utils.js"></script>
+        <script src="js/ui-utils.js"></script>
+
+		<script>
+            function e(elem) { return document.getElementById(elem); }
+
+            function getValueArray(elemArray) {
+                const fields = elemArray.map(function(elemId) {
+                    return e(elemId).value;
+                })
+                return fields;
+            }
+
+            function clearQR(elemPrefix) {
+                e(elemPrefix+'-code').getContext('2d').clearRect(0, 0, e(elemPrefix+'-code').width, e(elemPrefix+'-code').height);
+                e(elemPrefix+'-result').innerHTML = "";
+                e(elemPrefix+'-bytes').innerHTML = "";
+            }
+
+            async function clear() {
+                clearQR('qr-massid');
+            }
+
+            function signAndDisplayQR(elemPref, _type, _version, priKeyPEM, pubKeyId, payloadValueArray) {
+                CRED.signAndPack(_type, _version, priKeyPEM, pubKeyId, payloadValueArray).then(uri => {
+                    PCFUtils.debugURI(uri).then( debugInfo => {
+                        UIUtils.drawsQR(elemPref, uri, debugInfo);
+
+                        CRED.unpackAndVerify(uri).then(result => {
+                            UIUtils.drawVerifiedSymbol(elemPref+'-code',result);
+                        });
+                    });
+                });
+            }
+
+            function generateQRCodes() {
+                gtag('event', 'generateQR');
+
+                clear();
+
+                // Where to Download the public key
+                const pubKeyLink = e("qr-link").value.trim().replace("http://","");
+
+                // PEM code of the private key
+                const priKeyPEM = e('privkey').value;
+
+                const massIdArray = [
+                    "qr-iin",
+                    "qr-aam-version",
+                    "qr-version",
+                    "qr-dca", 
+                    "qr-dcb",
+                    "qr-dcd",
+                    "qr-dba",
+                    "qr-dac",
+                    "qr-dad",
+                    "qr-dcs",
+                    "qr-dct",
+                    "qr-dbd",
+                    "qr-dbb",
+                    "qr-dbc",
+                    "qr-day",
+                    "qr-dau",
+                    "qr-dag",
+                    "qr-dai",
+                    "qr-daj",
+                    "qr-dak",
+                    "qr-daq",
+                    "qr-dcf",
+                    "qr-dcg",
+                    "qr-dch",
+                    //"qr-dde", //Truncated Flags
+                    //"qr-ddf", //Truncated Flags
+                    //"qr-ddg", //Truncated Flags
+                    "qr-dah",
+                    "qr-daz",
+                    "qr-dci",
+                    "qr-dcj",
+                    "qr-dck",
+                    "qr-dbn",
+                    "qr-dbg",
+                    "qr-dbs",
+                    "qr-dcu",
+                    "qr-dce",
+                    "qr-dcl",
+                    "qr-dcm",
+                    "qr-dcn",
+                    "qr-dco",
+                    "qr-dcp",
+                    "qr-dcq",
+                    "qr-dcr",
+                    "qr-dda",
+                    "qr-ddb",
+                    "qr-ddc",
+                    "qr-ddd",
+                    "qr-daw",
+                    "qr-dax",
+                    "qr-ddh",
+                    "qr-ddi",
+                    "qr-ddj",
+                    "qr-ddk",
+                    "qr-ddl", 
+                    "qr-zva"
+                ];
+
+                signAndDisplayQR("qr-massid", "us.ma.id", "3", priKeyPEM, pubKeyLink, getValueArray(massIdArray));
+            }
+
+            function verifyQRCode() {
+                gtag('event', 'verifyQR');
+                
+                PCFUtils.debugParseURI(e("qr-verify").value).then(result => {
+                    e("qr-verify-result").innerHTML = result;
+                });
+                PCFUtils.debugVerify(e("qr-verify").value).then(debug => {
+                    e('qr-verify-verified').innerHTML = debug;
+                });
+            }
+
+            function onScanSuccess(qrMessage) {
+                e("qr-verify").value = qrMessage;
+                verifyQRCode();
+            }
+
+            function onScanFailure(error) {
+                // handle scan failure, usually better to ignore and keep scanning
+                console.warn(`QR error = ${error}`);
+            }
+        </script>
+        
+        <script>
+            function loadDemo() {
+                e("qr-aam-version").value = "9"; 
+                e("qr-version").value = "0"; 
+                e("qr-iin").value = "636000"; 
+                e("qr-dca").value = "D"; 
+                e("qr-dcb").value = "K";
+                e("qr-dcd").value = "PH";
+                e("qr-dba").value = "20241210";
+                e("qr-dac").value = "JOHN";
+                e("qr-dad").value = "";
+                e("qr-dcs").value = "SAMPLE";
+                e("qr-dct").value = "";
+                e("qr-dbd").value = "20160606";
+                e("qr-dbb").value = "19860606";
+                e("qr-dbc").value = "1";
+                e("qr-day").value = "BRO";
+                e("qr-dau").value = "173";
+                e("qr-dag").value = "2300 WEST BROAD STREET";
+                e("qr-dai").value = "RICHMOND";
+                e("qr-daj").value = "VA";
+                e("qr-dak").value = "232690000";
+                e("qr-daq").value = "T64235789";
+                e("qr-dcf").value = "2424244747474786102204";
+                e("qr-dcg").value = "USA";
+                e("qr-dch").value = "";
+                e("qr-dah").value = "APT 22";
+                e("qr-daz").value = "WHI";
+                e("qr-dci").value = "Boston, MA";
+                e("qr-dcj").value = "";
+                e("qr-dck").value = "123456789";
+                e("qr-dbn").value = "";
+                e("qr-dbg").value = "";
+                e("qr-dbs").value = "";
+                e("qr-dcu").value = "JR";
+                e("qr-dce").value = "4";
+                e("qr-dcl").value = "BK";
+                e("qr-dcm").value = "";
+                e("qr-dcn").value = "";
+                e("qr-dco").value = "";
+                e("qr-dcp").value = "";
+                e("qr-dcq").value = "";
+                e("qr-dcr").value = "";
+                e("qr-dda").value = "F";
+                e("qr-ddb").value = "20080606";
+                e("qr-ddc").value = "20090606";
+                e("qr-ddd").value = "1";
+                e("qr-daw").value = "";
+                e("qr-dax").value = "";
+                e("qr-ddh").value = "20040606";
+                e("qr-ddi").value = "20050606";
+                e("qr-ddj").value = "20070606";
+                e("qr-ddk").value = "1";
+                e("qr-ddl").value = "0";  
+                e("qr-zva").value = "01";          
+            }
+
+            loadDemo();
+        </script>
+
+        <script>
+            async function preloadKey() {
+                CRED.resolveKey(e("qr-link").value);
+            }
+            window.onload = function() {
+                preloadKey();
+            }
+        </script>
+	</body>
+</html>
+
+

@@ -1,0 +1,1397 @@
+<!doctype html>
+	<head>
+        <meta charset="UTF-8">
+		<link rel="stylesheet" href="css/style.v2.css">
+        <link rel="stylesheet" href="css/topnav.css">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="shortcut icon" href="https://www.pathcheck.org/hubfs/Favicon.png">
+		<title>EU's Digital Covid Certificate Combined Payload</title>
+
+        <!-- Global site tag (gtag.js) - Google Analytics -->
+        <script async src="https://www.googletagmanager.com/gtag/js?id=G-DTDMHW3NV6"></script>
+        <script>
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+            gtag('config', 'G-DTDMHW3NV6');
+        </script>
+
+        <script src="js/qrcode.min.js"></script>
+
+        <script src="js/libbcmath.js" type="text/javascript"></script>
+        <script src="js/bcmath.js" type="text/javascript"></script>
+        <script src="js/pdf417.js" type="text/javascript"></script>
+
+        <script src="js/cred-sdk.min.js"></script>
+
+        <script src="js/dcc-sdk.min.js"></script>
+        <script src="js/he.js"></script>
+        <script src="js/ajv7.min.js"></script>
+        <script src="js/json-beautify.min.js"></script>
+
+        <script src="js/pcf-utils.js"></script>
+        <script src="js/ui-utils.js"></script>
+        <script src="js/ui-comp.js"></script>
+
+        <script src="js/bbs-cbld-sdk.min.js"></script>
+        <script src="js/bbs-jxt-sdk.min.js"></script>
+        <script src="js/eddsa-jxt-sdk.min.js"></script>
+
+        <script src="js/divoc-sdk.min.js"></script>
+        <script src="js/shc-sdk.min.js"></script>
+	</head>
+	<body>
+        <div class="topnav">
+            <div class="topnavContainer">
+              <a class="active" href="index.html">Signers</a>
+              <a href="verify.html"><span class="xs-hidden">Universal </span>Verifier</a>
+              <a class="xs-hidden" href="debug.html">QR Debugger</a>
+              <a class="xs-hidden" href="https://github.com/Path-Check/paper-cred-demo">Source Code</a>
+              <a href="https://github.com/Path-Check/paper-cred"><span class="xs-hidden"> QR </span>Specs</a>
+              <a href="http://vaccine-docs.pathcheck.org"><span class="xs-hidden">Vaccine </span>Docs</a>
+              <a class="xs-hidden" href="http://pathcheck.org">About PathCheck</a>
+            </div>
+        </div>
+      
+        <div class="subnav">
+            <div class="subnavContainer">
+                <a href="index.v5.html">PCF<span class="xs-hidden">'s 4 QRs</span></a>
+                <a class="active" href="eu.dgc.html">EU<span class="xs-hidden"> Covid Pass</span></a>
+                <a href="icao.html">ICAO<span class="xs-hidden"> Seals</span></a>
+                <a href="cowin.html">DIVOC<span class="xs-hidden">/India</span></a>
+                <a class="xs-hidden" href="opencerta.html"><span class="xs-hidden">Open</span>Certa</a>
+                <a href="vial.html">Vial<span class="xs-hidden"> Label</span></a>
+                <a href="us.ma.id.html"><span class="xs-hidden">Mass </span>ID</a>
+                <a href="banknote.html">Cash<span class="xs-hidden"> Bills</span></a>
+            </div>
+        </div>
+
+        <div class="center">
+            <h1>Digital Covid Certificate <span class="xs-hidden"><small>(Schema 1.3.0)</small></span></h1>
+            <div class="full-div">
+                <div class="third">
+                    <h4>Credential</h4>
+                    <table>
+                        <tr><td>Issue Date</td><td><input id="qr-cert-iat" type="text" placeholder=""/></td></tr>
+                        <tr><td>Exp<small> (months)</td></small></td><td><input id="qr-cert-exp" type="text" placeholder=""/></td></tr>
+                        <tr><td>Issuer</td><td><input id="qr-cert-iss" type="text" placeholder=""/></td></tr>
+                    </table>
+                    
+                    <h4>Subject</h4>
+                    <table>
+                        <tr><td>Fam Name</td><td><input id="qr-subject-nam-fn" type="text" placeholder=""/></td></tr>
+                        <tr><td>Given Name</td><td><input id="qr-subject-nam-gn" type="text" placeholder=""/></td></tr>
+                        <tr><td>Std Family</td><td><input id="qr-subject-nam-fnt" type="text" placeholder=""/></td></tr>
+                        <tr><td>Std Given</td><td><input id="qr-subject-nam-gnt" type="text" placeholder=""/></td></tr>
+                        <tr><td>DoB</td><td><input id="qr-subject-dob-days" type="text" placeholder=""/></td></tr>
+                    </table>
+
+                    <h4>Recovery</h4>
+                    <table>
+                        <tr><td>Include?</td><td><input id="qr-recov-include" type="checkbox"></td></tr>
+                        <tr><td>Disease</td><td><input id="qr-recov-tg-numToB32" type="text" placeholder=""/></td></tr>
+                        <tr><td>Date 1st Pos</td><td><input id="qr-recov-fr-days" type="text" placeholder=""/></td></tr>
+                        <tr><td>Valid From</td><td><input id="qr-recov-df-days" type="text" placeholder=""/></td></tr>
+                        <tr><td>Valid Until</td><td><input id="qr-recov-du-days" type="text" placeholder=""/></td></tr>
+                        <tr><td>Country</td><td><input id="qr-recov-co" type="text" placeholder=""/></td></tr>
+                        <tr><td>Issuer</td><td><input id="qr-recov-is" type="text" placeholder=""/></td></tr>
+                        <tr><td>Cert ID</td><td><input id="qr-recov-ci" type="text" placeholder=""/></td></tr>
+                    </table>
+                </div>
+                <div class="third"> 
+                    <h4>COVID 1st Test</h4>
+                    <table>
+                        <tr><td>Include?</td><td><input id="qr-test-first-include" type="checkbox"></td></tr>
+                        <tr><td>Disease</td><td><input id="qr-test-first-tg-numToB32" type="text" placeholder=""/></td></tr>
+                        <tr><td>Type</td><td><input id="qr-test-first-tt" type="text" placeholder=""/></td></tr>
+                        <tr><td>Test Name</td><td><input id="qr-test-first-nm" type="text" placeholder=""/></td></tr>
+                        <tr><td>Manuf</td><td><input id="qr-test-first-ma" type="text" placeholder=""/></td></tr>
+                        <tr><td>Date Colect</td><td><input id="qr-test-first-sc-timestamp" type="text" placeholder=""/></td></tr>
+                        <tr><td>Result</td><td><input id="qr-test-first-tr" type="text" placeholder=""/></td></tr>
+                        <tr><td>Centre</td><td><input id="qr-test-first-tc" type="text" placeholder=""/></td></tr>
+                        <tr><td>Country</td><td><input id="qr-test-first-co" type="text" placeholder=""/></td></tr>
+                        <tr><td>Issuer</td><td><input id="qr-test-first-is" type="text" placeholder=""/></td></tr>
+                        <tr><td>Cert ID</td><td><input id="qr-test-first-ci" type="text" placeholder=""/></td></tr>
+                    </table>
+
+                    <h4>COVID 2nd Test</h4>
+                    <table>
+                        <tr><td>Include?</td><td><input id="qr-test-second-include" type="checkbox"></td></tr>
+                        <tr><td>Disease</td><td><input id="qr-test-second-tg-numToB32" type="text" placeholder=""/></td></tr>
+                        <tr><td>Type</td><td><input id="qr-test-second-tt" type="text" placeholder=""/></td></tr>
+                        <tr><td>Test Name</td><td><input id="qr-test-second-nm" type="text" placeholder=""/></td></tr>
+                        <tr><td>Manuf</td><td><input id="qr-test-second-ma" type="text" placeholder=""/></td></tr>
+                        <tr><td>Date Colect</td><td><input id="qr-test-second-sc-timestamp" type="text" placeholder=""/></td></tr>
+                        <tr><td>Result</td><td><input id="qr-test-second-tr" type="text" placeholder=""/></td></tr>
+                        <tr><td>Centre</td><td><input id="qr-test-second-tc" type="text" placeholder=""/></td></tr>
+                        <tr><td>Country</td><td><input id="qr-test-second-co" type="text" placeholder=""/></td></tr>
+                        <tr><td>Issuer</td><td><input id="qr-test-second-is" type="text" placeholder=""/></td></tr>
+                        <tr><td>Cert ID</td><td><input id="qr-test-second-ci" type="text" placeholder=""/></td></tr>
+                    </table>
+                </div>
+                <div class="third">
+                    <h4>Vaccination 1st Dose</h4>
+                    <table>
+                        <tr><td>Include?</td><td><input id="qr-vax-first-include" type="checkbox" checked></td></tr>
+                        <tr><td>Disease</td><td><input id="qr-vax-first-tg-numToB32" type="text" placeholder=""/></td></tr>
+                        <tr><td>Prophylaxis</td><td><input id="qr-vax-first-vp" type="text" placeholder=""/></td></tr>
+                        <tr><td>Product</td><td><input id="qr-vax-first-mp" type="text" placeholder=""/></td></tr>
+                        <tr><td>Manuf</td><td><input id="qr-vax-first-ma" type="text" placeholder=""/></td></tr>
+                        <tr><td>Dose #</td><td><input id="qr-vax-first-dn" type="text" placeholder=""/></td></tr>
+                        <tr><td>Doses</td><td><input id="qr-vax-first-sd" type="text" placeholder=""/></td></tr>
+                        <tr><td>Date</td><td><input id="qr-vax-first-dt-days" type="text" placeholder=""/></td></tr>
+                        <tr><td>Country</td><td><input id="qr-vax-first-co" type="text" placeholder=""/></td></tr>
+                        <tr><td>Issuer</td><td><input id="qr-vax-first-is" type="text" placeholder=""/></td></tr>
+                        <tr><td>Cert ID</td><td><input id="qr-vax-first-ci" type="text" placeholder=""/></td></tr>
+                    </table>
+                    <h4>Vaccination 2nd Dose</h4>
+                    <table>
+                        <tr><td>Include?</td><td><input id="qr-vax-second-include" type="checkbox"></td></tr>
+                        <tr><td>Disease</td><td><input id="qr-vax-second-tg-numToB32" type="text" placeholder=""/></td></tr>
+                        <tr><td>Prophylaxis</td><td><input id="qr-vax-second-vp" type="text" placeholder=""/></td></tr>
+                        <tr><td>Product</td><td><input id="qr-vax-second-mp" type="text" placeholder=""/></td></tr>
+                        <tr><td>Manuf</td><td><input id="qr-vax-second-ma" type="text" placeholder=""/></td></tr>
+                        <tr><td>Dose #</td><td><input id="qr-vax-second-dn" type="text" placeholder=""/></td></tr>
+                        <tr><td>Doses</td><td><input id="qr-vax-second-sd" type="text" placeholder=""/></td></tr>
+                        <tr><td>Date</td><td><input id="qr-vax-second-dt-days" type="text" placeholder=""/></td></tr>
+                        <tr><td>Country</td><td><input id="qr-vax-second-co" type="text" placeholder=""/></td></tr>
+                        <tr><td>Issuer</td><td><input id="qr-vax-second-is" type="text" placeholder=""/></td></tr>
+                        <tr><td>Cert ID</td><td><input id="qr-vax-second-ci" type="text" placeholder=""/></td></tr>
+                    </table>
+                </div>
+                
+                <div class="quarter">
+                    <h4>CRED Credentials</h4>
+                    <label for="privkey">Private Key</label><br/>
+                    <textarea id="privkey" rows="3" style="width: 100%;">-----BEGIN EC PARAMETERS-----
+BgUrgQQACg==
+-----END EC PARAMETERS-----
+-----BEGIN EC PRIVATE KEY-----
+MHQCAQEEIPWKbSezZMY1gCpvN42yaVv76Lo47FvSsVZpQl0a5lWRoAcGBSuBBAAK
+oUQDQgAE6DeIun4EgMBLUmbtjQw7DilMJ82YIvOR2jz/IK0R/F7/zXY1z+gqvFXf
+DcJqR5clbAYlO9lHmvb4lsPLZHjugQ==
+-----END EC PRIVATE KEY-----</textarea>
+
+                    <label for="pubkey">Public KeyID</label><br/>
+                    <textarea id="qr-link" rows="1" cols="30">1A9.PCF.PW</textarea>
+
+                    <h4>EU HC1 Credentials</h4>
+                    <label for="privkey">P8 Private Key</label><br/>
+                        <textarea id="privkeyEU" rows="3" style="width: 100%;">-----BEGIN PRIVATE KEY-----
+MIGHAgEAMBMGByqGSM49AgEGCCqGSM49AwEHBG0wawIBAQQgZgp3uylFeCIIXozb
+ZkCkSNr4DcLDxplZ1ax/u7ndXqahRANCAARkJeqyO85dyR+UrQ5Ey8EdgLyf9Nts
+CrwORAj6T68/elL19aoISQDbzaNYJjdD77XdHtd+nFGTQVpB88wPTwgb
+-----END PRIVATE KEY-----</textarea>
+
+                    <label for="pubkeyId">Public kID</label><br/>
+                    <textarea id="qr-linkEU" rows="1" cols="30">Rjene8QvRwA=</textarea>
+
+                    <label for="pubkey">PublicKey  Certificate</label><br/>
+                    <textarea id="pubkeyEU" rows="3" style="width: 100%;">-----BEGIN CERTIFICATE-----
+MIIBYDCCAQYCEQCAG8uscdLb0ppaneNN5sB7MAoGCCqGSM49BAMCMDIxIzAhBgNV
+BAMMGk5hdGlvbmFsIENTQ0Egb2YgRnJpZXNsYW5kMQswCQYDVQQGEwJGUjAeFw0y
+MTA0MjcyMDQ3MDVaFw0yNjAzMTIyMDQ3MDVaMDYxJzAlBgNVBAMMHkRTQyBudW1i
+ZXIgd29ya2VyIG9mIEZyaWVzbGFuZDELMAkGA1UEBhMCRlIwWTATBgcqhkjOPQIB
+BggqhkjOPQMBBwNCAARkJeqyO85dyR+UrQ5Ey8EdgLyf9NtsCrwORAj6T68/elL1
+9aoISQDbzaNYJjdD77XdHtd+nFGTQVpB88wPTwgbMAoGCCqGSM49BAMCA0gAMEUC
+IQDvDacGFQO3tuATpoqf40CBv09nfglL3wh5wBwA1uA7lAIgZ4sOK2iaaTsFNqEN
+AF7zi+d862ePRQ9Lwymr7XfwVm0=
+-----END CERTIFICATE-----</textarea>
+
+                    <h4>BBS+ Credentials</h4>
+                    <label for="privkey">Private Key</label><br/>
+                    <textarea id="bbs-privkey" rows="1" style="width: 100%;">5D6Pa8dSwApdnfg7EZR8WnGfvLDCZPZGsZ5Y1ELL9VDj</textarea>
+                    <label for="pubkey">Public Key ID/Controller</label><br/>
+                    <textarea id="bbs-key-id" rows="1" cols="30">did:web:PCF.PW:1A8#DEMO</textarea>
+                    <textarea id="bbs-controller" rows="1" cols="30">did:web:PCF.PW:1A8</textarea>
+                    <h4>EDDSA Credentials</h4>
+                    <label for="privkey">Private Key</label><br/>
+                    <textarea id="eddsa-privkey" rows="1" style="width: 100%;">z5Q2WLLaD7aJ44s6Aw6qXf1vNor9quCe1ZLhHqc63yhfFF63tbuTgPHgCzXKUbkHAGm8oE9jiQpCPepD88Jgyy7FW</textarea>
+                    <label for="pubkey">Public Key ID/Controller</label><br/>
+                    <textarea id="eddsa-key-id" rows="1" cols="30">did:web:PCF.PW:1A12#WEB</textarea>
+                    <textarea id="eddsa-controller" rows="1" cols="30">did:web:PCF.PW:1A12</textarea>
+                    <h4>DIVOC Credentials</h4>
+                    <label for="privkeyDivoc">Private Key</label><br/>
+                    <textarea id="privkeyDivoc" rows="3" cols="30">-----BEGIN RSA PRIVATE KEY-----
+MIIEowIBAAKCAQEAnXQalrgztecTpc+INjRQ8s73FSE1kU5QSlwBdICCVJBUKiuQUt7s+Z5epgCvLVAOCbP1mm5lV7bfgV/iYWDio7lzX4MlJwDedWLiufr3Ajq+79CQiqPaIbZTo0i13zijKtX7wgxQ78wT/HkJRLkFpmGeK3za21tEfttytkhmJYlwaDTEc+Kx3RJqVhVh/dfwJGeuV4Xc/e2NH++ht0ENGuTk44KpQ+pwQVqtW7lmbDZQJoOJ7HYmmoKGJ0qt2hrj15uwcD1WEYfY5N7N0ArTzPgctExtZFDmituLGzuAZfv2AZZ9/7Y+igshzfB0reIFdUKw3cdVTzfv5FNrIqN5pwIDAQABAoIBAHPILMUoLt5UTd5f/YnebqgeCRNAmGOBcwk7HtbMqQoGF93qqvZFd30XOAJZ/ncTpz77Vl95ToxxrWk1WQLCe+ZpOK3Dgk5sFSm8zXx1T64UBNPUSnWoh37C1D39+b9rppCZScgnxlyPdSLy3h3q8Hyoy+auqUEkm/ms5W2lT3fJscyN1IAyHrhsOBWjl3Ilq5GxBo5tbYv/Fb1pQiP/p2SIHA1+2ASXNYQP100F5Vn0V6SFtBXTCQnwcvbP083NvlGxs9+xRs3MCUcxCkKepWuzYwOZDmu/2yCz1/EsP6wlsYEHmCZLdIb0tQt0caqzB/RoxfBpNRIlhOtqHvBzUgECgYEAzIRn5Y7lqO3N+V29wXXtVZjYWvBh7xUfOxAwVYv0rKI0y9kHJHhIrU+wOVOKGISxBKmzqBQRPvXtXW8E0/14Zz82g60rRwtNjvW0UoZAY3KPouwruUIjAe2UnKZcQ//MBTrvds8QGpL6nxvPsBqU0y2K+ySAOxBtNtGEjzv8nxUCgYEAxRbMWukIbgVOuQjangkfJEfA1UaRFQqQ8jUmT9aiq2nREnd4mYP8kNKzJa9L7zj6Un6yLH5DbGspZ2gGODeRw3uVFN8XSzRdLvllNEyiG/waiysUtXfG2DPOR6xD8tXXDMm/tl9gTa8cbkvqYy10XT9MpfOAsusEZVmc0/DBBMsCgYAYdAxoKjnThPuHwWma5BrIjUnxNaTADWp6iWj+EYnjylE9vmlYNvmZn1mWwSJV5Ce2QwQ0KJIXURhcf5W4MypeTfSase3mxLc1TLOO2naAbYY3GL3xnLLK3DlUsZ9+kes3BOD097UZOFG3DIA8sjDxPxTLCoY6ibBFSa/r4GRIMQKBgQCranDCgPu79RHLDVBXM0fKnj2xQXbd/hqjDmcL+Xnx7E7S6OYTXyBENX1qwVQh9ESDi34cBJVPrsSME4WVT3+PreS0CnSQDDMfr/m9ywkTnejYMdgJHOvtDuHSpJlUk3g+vxnm3H0+E5d+trhdGiOjFnLrwyWkd5OTMqWcEEFQkQKBgFfXObDz/7KqeSaAxI8RzXWbI3Fa492b4qQUhbKYVpGn98CCVEFJr11vuB/8AXYCa92OtbwgMw6Ah5JOGzRScJKdipoxo7oc2LJ9sSjjw3RB/aWl35ChvnCJhmfSL8Usbj0nWVTrPwRLjMC2bIxkLtnm9qYXPumW1EjEbusjVMpN
+-----END RSA PRIVATE KEY-----</textarea>
+                        <br>
+                        <label for="pubKeyIdDivoc">Public kID</label><br/>
+                        <textarea id="pubKeyIdDivoc" rows="1" cols="30">did:india</textarea>
+                        <br>
+                        <label for="pubkeyDivoc">Public Key</label><br/>
+                        <textarea id="pubKeyDivoc" rows="3" cols="30">-----BEGIN PUBLIC KEY-----
+MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAnXQalrgztecTpc+INjRQ8s73FSE1kU5QSlwBdICCVJBUKiuQUt7s+Z5epgCvLVAOCbP1mm5lV7bfgV/iYWDio7lzX4MlJwDedWLiufr3Ajq+79CQiqPaIbZTo0i13zijKtX7wgxQ78wT/HkJRLkFpmGeK3za21tEfttytkhmJYlwaDTEc+Kx3RJqVhVh/dfwJGeuV4Xc/e2NH++ht0ENGuTk44KpQ+pwQVqtW7lmbDZQJoOJ7HYmmoKGJ0qt2hrj15uwcD1WEYfY5N7N0ArTzPgctExtZFDmituLGzuAZfv2AZZ9/7Y+igshzfB0reIFdUKw3cdVTzfv5FNrIqN5pwIDAQAB
+-----END PUBLIC KEY-----</textarea>
+                        <br>
+                </div>
+            </div>
+            <br>
+            <div class="four-quarter">
+                <button class="qr-btn" onclick="generateQRCodes()">Create Certificates</button>
+            </div>
+            <div class="four-quarter">
+                <h2></h2>
+            </div>
+            <div class="full-div">
+                <div class="third">
+                    <h4 id="qr-dgc-ed-jxt-code-label" style="display: none;"><a href="https://github.com/Path-Check/eddsa-jxt-sdk.js">JXT</a>: W3C VC w/ EDDSA on JSONXT</h4>
+                    <canvas id="qr-dgc-ed-jxt-code"></canvas><br/>
+                    <h4 id="qr-dgc-ed-jxt-pdf-label" style="display: none;">PDF 417 Format</h4>
+                    <canvas id="qr-dgc-ed-jxt-pdf"></canvas><br/>
+                    <pre id="qr-dgc-ed-jxt-result"></pre>
+                </div>
+
+                <div class="third">
+                    <h4 id="qr-dgc-jxt-code-label" style="display: none;"><a href="https://github.com/Path-Check/ed-jxt-sdk.js">JXT</a>: W3C VC w/ BBS+ on JSONXT</h4>
+                    <canvas id="qr-dgc-jxt-code"></canvas><br/>
+                    <h4 id="qr-dgc-jxt-pdf-label" style="display: none;">PDF 417 Format</h4>
+                    <canvas id="qr-dgc-jxt-pdf"></canvas><br/>
+                    <pre id="qr-dgc-jxt-result"></pre>
+                </div>
+
+                <div class="third">
+                    <h4 id="qr-dgc-cred-code-label" style="display: none;"><a href="https://github.com/Path-Check/cred-sdk.js">CRED</a>: ECDSA directly on URI</h4>
+                    <canvas id="qr-dgc-cred-code"></canvas><br/>
+                    <h4 id="qr-dgc-cred-pdf-label" style="display: none;">PDF 417 Format</h4>
+                    <canvas id="qr-dgc-cred-pdf"></canvas><br/>
+                    <pre id="qr-dgc-cred-result"></pre>
+                </div>
+
+                <div class="quarter xs-hidden">
+                    <label for="verify">Verify a QR Code</label>
+                    <textarea id="qr-verify" rows="10" cols="33" placeholder="cred:type:version:signature:pubkey:payload"></textarea>
+                    <br><br>
+                    <button class="qr-btn" onclick="verifyQRCode()">Verify</button>
+                    <br><br>
+                    <pre id="qr-verify-result"></pre>
+                    <pre id="qr-verify-verified"></pre>
+                </div>
+            </div>
+
+            <div class="four-quarter">
+                <h2></h2>
+            </div>
+            <div class="full-div">
+                <div class="third">
+                    <h4 id="qr-dgc-orig-code-label" style="display: none;"><a href="https://github.com/Path-Check/dcc-sdk.js">HC1</a>: CWT CBOR EC COSE ZLIB B45</h4>
+                    <canvas id="qr-dgc-orig-code"></canvas><br/>
+                    <h4 id="qr-dgc-orig-pdf-label" style="display: none;">PDF 417 Format</h4>
+                    <canvas id="qr-dgc-orig-pdf"></canvas><br/>
+                    <pre id="qr-dgc-orig-result"></pre>
+                </div>
+                <div class="third">
+                    <h4 id="qr-dgc-cbld-code-label" style="display: none;"><a href="https://github.com/Path-Check/bbs-cbld-sdk.js">CBLD</a>: W3C VC BBS+ CBOR-LD B32</h4>
+                    <canvas id="qr-dgc-cbld-code"></canvas><br/>
+                    <h4 id="qr-dgc-cbld-pdf-label" style="display: none;">PDF 417 Format</h4>
+                    <canvas id="qr-dgc-cbld-pdf"></canvas><br/>
+                    <pre id="qr-dgc-cbld-result"></pre>
+                </div>
+                <div class="third">
+                    <h4 id="qr-dgc-shc-code-label" style="display: none;"><a href="https://github.com/Path-Check/shc-sdk.js">SHC</a>: JWT ECDSA JOSE ZLIB B10</h4>
+                    <canvas id="qr-dgc-shc-code"></canvas><br/>
+                    <h4 id="qr-dgc-shc-pdf-label" style="display: none;">PDF 417 Format</h4>
+                    <canvas id="qr-dgc-shc-pdf"></canvas><br/>
+                    <pre id="qr-dgc-shc-result"></pre>
+                </div>
+
+                <div class="quarter xs-hidden">
+                </div>
+            </div>
+            
+            <div class="four-quarter">
+                <h2></h2>
+            </div>
+            <div class="full-div">
+                <div class="third">
+                    <h4 id="qr-dgc-divoc-code-label" style="display: none;"><a href="https://github.com/Path-Check/divoc-sdk.js">DIVOC</a>: W3C VC RSA on a ZIP file</h4>
+                    <canvas id="qr-dgc-divoc-code"></canvas><br/>
+                    <h4 id="qr-dgc-divoc-pdf-label" style="display: none;">PDF 417 Format</h4>
+                    <canvas id="qr-dgc-divoc-pdf"></canvas><br/>
+                    <pre id="qr-dgc-divoc-result"></pre>
+                </div>
+                <div class="third">
+                    <h4 id="qr-dgc-raw-code-label" style="display: none;">RAW: BBS+ W3C VC raw</h4>
+                    <canvas id="qr-dgc-raw-code"></canvas><br/>
+                    <h4 id="qr-dgc-raw-pdf-label" style="display: none;">PDF 417 Format</h4>
+                    <canvas id="qr-dgc-raw-pdf"></canvas><br/>
+                    <pre id="qr-dgc-raw-result"></pre>
+                </div>
+
+                <div class="quarter xs-hidden">
+                </div>
+            </div>
+        </div>
+        <div class="center" id="comparison">
+
+        </div>
+
+        <div class="footer">
+            <div class="footerContainer">
+              <img src="https://www.pathcheck.org/hubfs/pathcheck-foundation-logo-white.svg" alt="pathcheck-foundation-logo-white" width="264" style="width: 264px; max-width: 264px; margin: 0px 0px 5px;">
+              <span style="font-size: 14px;"> 
+                <br>©2021. PathCheck Foundation – a 501(c)(3) nonprofit.
+                <br>Content is distributed under the Creative Commons CC-BY License unless otherwise stated. PathCheck is a trademark of PathCheck Foundation.
+              </span>
+              
+            </div>
+        </div>
+
+		<script>
+            function e(elem) { 
+                if (document.getElementById(elem) == null) {
+                    console.log(elem + " not found");
+                }
+                return document.getElementById(elem); 
+            }
+
+            function replacer(key, value) {
+                if(value instanceof Map) {
+                    return {
+                    dataType: 'Map',
+                    value: Array.from(value.entries()), // or with spread: value: [...value]
+                    };
+                } else {
+                    return value;
+                }
+            }
+            function reviver(key, value) {
+                if(typeof value === 'object' && value !== null) {
+                    if (value.Map) {
+                        return new Map(value.Map);
+                    }
+                }
+                return value;
+            }
+
+            function getValueArray(elemArray, epochDate) {
+                const fields = elemArray.map(function(elemId) {
+                    if (elemId.endsWith('-date')) {
+                        // Sends dates always in seconds since epoch
+                        return dateInYYYYMMDD(e(elemId).value).toString();
+                    }
+                    if (elemId.endsWith('-days')) {
+                        // Sends dates always in seconds since epoch
+                        return dateStrInDaysToEpoch(e(elemId).value, epochDate).toString();
+                    }
+                    if (elemId.endsWith('-timestamp')) {
+                        // Sends dates always in seconds since epoch
+                        return dateStrInSecondsToEpoch(e(elemId).value, epochDate).toString();
+                    }
+                    if (elemId.endsWith('-numToB32')) {
+                        // Sends dates always in seconds since epoch
+                        return numberToBase32(e(elemId).value);
+                    }
+                    return e(elemId).value;
+                })
+                return fields;
+            }
+
+            function dateInYYYYMMDD(str) {
+                let d = new Date(str)
+                return   "" + d.getFullYear() +  
+                        ("0"+(d.getMonth()+1)).slice(-2) +
+                        ("0" + d.getDate()).slice(-2);
+            }
+
+            function dateInSecondsToEpoch(date, epochDate) {
+                let time = Math.round(date.getTime()/1000);
+                let epochTime = Math.round(epochDate.getTime()/1000);
+                return numberToBase32(time-epochTime);
+            }
+
+            function dateStrInSecondsToEpoch(str, epochDate) {
+                return dateInSecondsToEpoch(new Date(str), epochDate);
+            }
+
+            function dateInDaysToEpoch(date, epochDate) {
+                let time = Math.round(date.getTime()/1000/60/60/24);
+                let epochTime = Math.round(epochDate.getTime()/1000/60/60/24);
+                return numberToBase32(time-epochTime);
+            }
+
+            function numberToBase32(number) {
+                return new Number(number).toString(32).toUpperCase();
+            }
+
+            function base32ToNumber(base32String) {
+                return parseInt(base32String, 32);
+            }
+
+            function dateStrInDaysToEpoch(str, epochDate) {
+                return dateInDaysToEpoch(new Date(str), epochDate);
+            }
+
+            function clearQR(elemPrefix) {
+                e(elemPrefix+'-code').getContext('2d').clearRect(0, 0, e(elemPrefix+'-code').width, e(elemPrefix+'-code').height);
+                e(elemPrefix+'-result').innerHTML = "";
+            }
+
+            async function clear(payloads, compressionAlgos) {
+                payloads.forEach(payload => {
+                    compressionAlgos.forEach(algo => {
+                        clearQR(`qr-${payload.id}-${algo.id}`);
+                    });
+                });
+            }
+
+            function setIfNonNull(newObj, index, value) {
+                if (typeof(value) == 'string') {
+                    if (value.length > 0) {
+                        newObj[index] = value;
+                    }
+                } else {
+                    newObj[index] = value;
+                }
+            }
+
+            function removeEmpty(obj) {
+                if (Array.isArray(obj)) {
+                    const newObj = [];
+                    obj.forEach((v, i) => {  
+                        if (v === Object(v)) {
+                            newObj[i] = removeEmpty(v);
+                        } else if (v) {
+                            setIfNonNull(newObj, i, v);
+                        }
+                    });
+                    return newObj;
+                } else {
+                    const newObj = {};
+                    Object.entries(obj).forEach(([k, v]) => {
+                        if (v === Object(v)) {
+                            newObj[k] = removeEmpty(v);
+                        } else if (v) {
+                            setIfNonNull(newObj, k, v);
+                        }
+                    });
+                    return newObj;
+                }                
+            }
+
+            function signAndDisplayQR(elemPref, _type, _version, priKeyPEM, pubKeyId, payloadValueArray) {
+                const t0 = performance.now();
+                const uri = CRED.signAndPack(_type, _version, priKeyPEM, pubKeyId, payloadValueArray).then(uri => {
+                    const t1 = performance.now();
+                    PCFUtils.debugURI(uri).then( debugInfo => {
+                        UIUtils.renderQR(elemPref, uri);
+
+                        // Updates screen elements. 
+                        e(elemPref+"-result").innerHTML= debugInfo;
+                        
+                        e(elemPref+"-time-sign").innerHTML = Math.round(t1-t0);
+                        e(elemPref+"-time-uri").innerHTML  = Math.round(uri.length * 5.5/8);
+                        e(elemPref+"-time-json").innerHTML = Math.round(uri.length);
+
+                        studyQR(uri, elemPref);
+
+                        const v0 = performance.now();
+                        CRED.unpackAndVerify(uri).then(result => {
+                            const v1 = performance.now();
+                            e(elemPref+"-time-verify").innerHTML=Math.round(v1-v0);
+                            UIUtils.drawVerifiedSymbol(elemPref+'-code',result);
+                        });
+                    });
+                });
+            }
+
+            function signAndDisplayQRCBLD(elemPref, json, keyPair) {
+                const t0 = performance.now();
+
+                const uri = BBS_CBLD.signAndPack(json, keyPair).then(uri => {
+                    const t1 = performance.now();
+                    
+                    UIUtils.renderQR(elemPref, uri);
+
+                    // Updates screen elements. 
+                    e(elemPref+"-result").innerHTML= 
+                                                "<span class='schema'>" + uri.substring(0,4) + "</span></a>:" + 
+                                                "<span class='message'>" + uri.substring(5) + "</span><br>";
+                    
+                    e(elemPref+"-result").innerHTML +=
+                        "<pre>CBLD:<span class='message'>Payload</span></pre>"
+                    
+                    e(elemPref+"-time-sign").innerHTML = Math.round(t1-t0);
+                    e(elemPref+"-time-uri").innerHTML  = Math.round(uri.length * 5.5/8);
+                    e(elemPref+"-time-json").innerHTML = Math.round(uri.length);
+
+                    studyQR(uri, elemPref);
+
+                    const v0 = performance.now();
+                    BBS_CBLD.unpackAndVerify(uri).then(result => {
+                        const v1 = performance.now();
+                        e(elemPref+"-time-verify").innerHTML=Math.round(v1-v0);
+                        UIUtils.drawVerifiedSymbol(elemPref+'-code',result);
+                    });
+                });
+            }
+
+            function htmlEncode(text) {
+                if (!text) return text;
+                return text.replaceAll('>','&#62;')
+                        .replaceAll('<','&#60;')
+                        .replaceAll('\'','&#39;')
+                        .replaceAll('\"','&#34;');
+            }
+
+            function signAndDisplayQRJSON(elemPref, json, keyPair) {
+                const t0 = performance.now();
+
+                const uri = BBS_CBLD.sign(json, keyPair).then(uri => {
+                    const t1 = performance.now();
+                    uri = JSON.stringify(uri);
+
+                    UIUtils.renderQR(elemPref, uri);
+
+                    // Updates screen elements. 
+                    e(elemPref+"-result").innerHTML = "<span class='schema'>" + htmlEncode(uri) + "</span></a>";
+                    
+                    e(elemPref+"-result").innerHTML += "<pre><span class='message'>JSON Payload</span></pre>"
+                    
+                    e(elemPref+"-time-sign").innerHTML = Math.round(t1-t0);
+                    e(elemPref+"-time-uri").innerHTML  = Math.round(uri.length); // is not an alphanumeric.
+                    e(elemPref+"-time-json").innerHTML = Math.round(uri.length);
+
+                    studyQR(uri, elemPref);
+
+                    const v0 = performance.now();
+                    BBS_CBLD.verify(JSON.parse(uri)).then(result => {
+                        const v1 = performance.now();
+                        e(elemPref+"-time-verify").innerHTML=Math.round(v1-v0);
+                        UIUtils.drawVerifiedSymbol(elemPref+'-code',result);
+                    });
+                });
+            }
+
+            function signAndDisplayQRDIVOC(elemPref, json) {
+                // Where to Download the public key
+                const pubKeyIdDivoc = e("pubKeyIdDivoc").value;
+                const privkeyDivoc = e('privkeyDivoc').value;
+                const pubKeyDivoc = e('pubKeyDivoc').value;
+
+                const t0 = performance.now();
+                DIVOC.sign(json, privkeyDivoc, pubKeyDivoc).then(cert => {
+                    DIVOC.pack(cert).then(packed => {
+                        const t1 = performance.now();
+                        
+                        UIUtils.renderQR(elemPref, packed);
+
+                        // Updates screen elements. 
+                        e(elemPref+"-result").innerHTML= 
+                                                    "<span class='schema'>" + packed + "</span></a>";
+                        
+                        e(elemPref+"-result").innerHTML +=
+                            "<pre>PK<span class='message'>Payload</span></pre>"
+                        
+                        e(elemPref+"-time-sign").innerHTML = Math.round(t1-t0);
+                        e(elemPref+"-time-uri").innerHTML  = Math.round(packed.length);
+                        e(elemPref+"-time-json").innerHTML = Math.round(packed.length);
+
+                        studyQR(packed, elemPref);
+
+                        const v0 = performance.now();
+                        DIVOC.unpackAndVerify(packed, pubKeyDivoc).then(verified => {
+                            const v1 = performance.now();
+                            e(elemPref+"-time-verify").innerHTML=Math.round(v1-v0);
+                            UIUtils.drawVerificationResult(elemPref+'-code',verified);
+                        });
+                    });
+                });
+            }
+
+            function signAndDisplayQRJXT(elemPref, domain, type, version, json, keyPair) {
+                const t0 = performance.now();
+
+                const uri = BBS_JXT.signAndPack(json, keyPair, domain, type, version).then(uri => {
+                    const t1 = performance.now();
+                    
+                    UIUtils.renderQR(elemPref, uri);
+
+                    const uriArray = uri.split(":");
+
+                    var payload = uriArray[4].split("/");
+
+                    var longest = payload.reduce(
+                        function (a, b) {
+                            return a.length > b.length ? a : b;
+                        }
+                    );
+                    var index = payload.indexOf(longest);
+                    payload[index] = "<span class='signature'>"+payload[index]+"</span>";
+                    uriArray[4] = payload.join("/")
+
+                    e(elemPref+"-result").innerHTML += 
+                        "<a href='https://jsonxt.io/'><span class='schema'>" + uriArray[0] + "</span></a>:" + 
+                        "<a href='https://"+uriArray[1]+"/.well-known/templates.json'><span class='pub-key'>"+uriArray[1]+"</span></a>:"+
+                        "<a href='https://github.com/Path-Check/paper-cred/blob/main/payloads/"+uriArray[2].toLowerCase()+"."+uriArray[3]+".md'><span class='protocol'>"+uriArray[2]+":"+uriArray[3]+"</span></a>:" +                           
+                        "<span class='message'>" + uriArray[4] + "</span><br>";
+                    
+                    e(elemPref+"-result").innerHTML +=     
+                        "<pre>JXT:<span class='pub-key'>TEMPLATE</span>:<span class='protocol'>TYPE:VER</span>:" +
+                        "<span class='message'>PAYLOAD</span>/<span class='signature'>SIG</span></pre>";
+
+                    e(elemPref+"-time-sign").innerHTML = Math.round(t1-t0);
+                    e(elemPref+"-time-uri").innerHTML  = Math.round(uri.length * 5.5/8);
+                    e(elemPref+"-time-json").innerHTML = Math.round(uri.length);
+
+                    studyQR(uri, elemPref);
+
+                    const v0 = performance.now();
+                    BBS_JXT.unpackAndVerify(uri).then(result => {
+                        const v1 = performance.now();
+                        e(elemPref+"-time-verify").innerHTML=Math.round(v1-v0);
+                        UIUtils.drawVerifiedSymbol(elemPref+'-code',result);
+                    });
+                });
+            }
+
+            function signAndDisplayQREDJXT(elemPref, domain, type, version, json, keyPair) {
+                const t0 = performance.now();
+
+                const uri = EDDSA_JXT.signAndPack(json, keyPair, domain, type, version).then(uri => {
+                    const t1 = performance.now();
+                    
+                    UIUtils.renderQR(elemPref, uri);
+
+                    const uriArray = uri.split(":");
+
+                    var payload = uriArray[4].split("/");
+
+                    var longest = payload.reduce(
+                        function (a, b) {
+                            return a.length > b.length ? a : b;
+                        }
+                    );
+                    var index = payload.indexOf(longest);
+                    payload[index] = "<span class='signature'>"+payload[index]+"</span>";
+                    uriArray[4] = payload.join("/")
+
+                    e(elemPref+"-result").innerHTML += 
+                        "<a href='https://jsonxt.io/'><span class='schema'>" + uriArray[0] + "</span></a>:" + 
+                        "<a href='https://"+uriArray[1]+"/.well-known/templates.json'><span class='pub-key'>"+uriArray[1]+"</span></a>:"+
+                        "<a href='https://github.com/Path-Check/paper-cred/blob/main/payloads/"+uriArray[2].toLowerCase()+"."+uriArray[3]+".md'><span class='protocol'>"+uriArray[2]+":"+uriArray[3]+"</span></a>:" +                           
+                        "<span class='message'>" + uriArray[4] + "</span><br>";
+                    
+                    e(elemPref+"-result").innerHTML +=     
+                        "<pre>JXT:<span class='pub-key'>TEMPLATE</span>:<span class='protocol'>TYPE:VER</span>:" +
+                        "<span class='message'>PAYLOAD</span>/<span class='signature'>SIG</span></pre>";
+
+                    e(elemPref+"-time-sign").innerHTML = Math.round(t1-t0);
+                    e(elemPref+"-time-uri").innerHTML  = Math.round(uri.length * 5.5/8);
+                    e(elemPref+"-time-json").innerHTML = Math.round(uri.length);
+
+                    studyQR(uri, elemPref);
+
+                    const v0 = performance.now();
+                    EDDSA_JXT.unpackAndVerify(uri).then(result => {
+                        const v1 = performance.now();
+                        e(elemPref+"-time-verify").innerHTML=Math.round(v1-v0);
+                        UIUtils.drawVerifiedSymbol(elemPref+'-code',result);
+                    });
+                });
+            }
+
+            function signAndDisplayEUQR(elemPref, json, priKeyPEM, pubKeyPem) {
+                const eu45t0 = performance.now();
+                DCC.makeCWT(json, parseInt(e("qr-cert-exp").value), e("qr-cert-iss").value).then(cwt => {
+                    DCC.signAndPack(cwt, pubKeyPem, priKeyPEM).then(uri => {
+                        const eu45t1 = performance.now();
+                        UIUtils.renderQR(elemPref, uri);
+
+                        // Updates screen elements. 
+                        e(elemPref+"-result").innerHTML= 
+                                                    "<span class='schema'>" + uri.substring(0,3) + "</span></a>:" + 
+                                                    "<span class='message'>" + uri.substring(4) + "</span><br>";
+                        
+                        e(elemPref+"-result").innerHTML +=
+                            "<pre>HC1:<span class='message'>Payload</span></pre>"
+                            
+                        studyQR(uri, elemPref);
+                    
+                        e(elemPref+"-time-sign").innerHTML=Math.round(eu45t1-eu45t0);
+                        e(elemPref+"-time-uri").innerHTML = Math.round(uri.length * 5.5/8);
+                        e(elemPref+"-time-json").innerHTML = Math.round(uri.length);
+
+                        const v0 = performance.now();
+                        DCC.unpackAndVerify(uri, pubKeyPem).then(verified => {
+                            const v1 = performance.now();
+                            e(elemPref+"-time-verify").innerHTML=Math.round(v1-v0);
+                            UIUtils.drawVerificationResult(elemPref+'-code',verified);
+                        });
+                    });
+                });
+            }
+
+            function signAndDisplayQRSHC(elemPref, json, priKeyPEM, pubKeyLink) {
+                const eu45t0 = performance.now();
+                SHC.makeJWT(json, pubKeyLink).then(jwt => {
+                    SHC.signAndPack(jwt, priKeyPEM).then(uri => {
+                        const eu45t1 = performance.now();
+                        UIUtils.renderQR(elemPref, uri);
+
+                        // Updates screen elements. 
+                        e(elemPref+"-result").innerHTML= 
+                                                    "<span class='schema'>" + uri.substring(0,5) + "</span></a>" + 
+                                                    "<span class='message'>" + uri.substring(5) + "</span><br>";
+                        
+                        e(elemPref+"-result").innerHTML +=
+                            "<pre>SHC:/<span class='message'>Payload</span></pre>"
+                            
+                        studyQR(uri, elemPref);
+                    
+                        e(elemPref+"-time-sign").innerHTML=Math.round(eu45t1-eu45t0);
+                        e(elemPref+"-time-uri").innerHTML = Math.round(uri.length * 3.33/8);
+                        e(elemPref+"-time-json").innerHTML = Math.round(uri.length);
+
+                        const v0 = performance.now();
+                        SHC.unpackAndVerify(uri).then(verified => {
+                            const v1 = performance.now();
+                            e(elemPref+"-time-verify").innerHTML=Math.round(v1-v0);
+                            UIUtils.drawVerificationResult(elemPref+'-code',verified);
+                        });
+                    });
+                });
+            }
+
+            function tryBuildQR(uri, ecc) {
+                try {
+                    return QRCode.create(uri, { margin:0, width:275, errorCorrectionLevel: ecc, color: {dark: '#3654DD' }});
+                } catch {}
+                return undefined;
+            }
+
+            function studyQR(uri, elemPref) {
+                let qrH = tryBuildQR(uri, 'H'); 
+                let qrQ = tryBuildQR(uri, 'Q'); 
+                let qrM = tryBuildQR(uri, 'M'); 
+                let qrL = tryBuildQR(uri, 'L'); 
+
+                if (e(elemPref+"-comp-eccl")) {
+                    e(elemPref+"-comp-eccl").innerHTML = qrSizeBytes(qrL);
+                    e(elemPref+"-comp-eccm").innerHTML = qrSizeBytes(qrM);
+                    e(elemPref+"-comp-eccq").innerHTML = qrSizeBytes(qrQ);
+                    e(elemPref+"-comp-ecch").innerHTML = qrSizeBytes(qrH);
+                }
+
+                if (e(elemPref+"-bits-eccl")) {
+                    e(elemPref+"-bits-eccl").innerHTML = qrSizeBits(qrL);
+                    e(elemPref+"-bits-eccm").innerHTML = qrSizeBits(qrM);
+                    e(elemPref+"-bits-eccq").innerHTML = qrSizeBits(qrQ);
+                    e(elemPref+"-bits-ecch").innerHTML = qrSizeBits(qrH);
+                }
+
+                if (e(elemPref+"-size-eccl")) {
+                    e(elemPref+"-size-eccl").innerHTML = qrSizeMillimiters(qrL, 150);
+                    e(elemPref+"-size-eccm").innerHTML = qrSizeMillimiters(qrM, 150);
+                    e(elemPref+"-size-eccq").innerHTML = qrSizeMillimiters(qrQ, 150);
+                    e(elemPref+"-size-ecch").innerHTML = qrSizeMillimiters(qrH, 150);
+                }
+
+                if (e(elemPref+"-size300-eccl")) {
+                    e(elemPref+"-size300-eccl").innerHTML = qrSizeMillimiters(qrL, 300);
+                    e(elemPref+"-size300-eccm").innerHTML = qrSizeMillimiters(qrM, 300);
+                    e(elemPref+"-size300-eccq").innerHTML = qrSizeMillimiters(qrQ, 300);
+                    e(elemPref+"-size300-ecch").innerHTML = qrSizeMillimiters(qrH, 300);
+                }
+            }
+
+            function describe(qr) {
+                if (!qr) return "--x--";
+                return qr.modules.size + "x" + qr.modules.size + " " + qrSizeBytes(qr) + " bytes ";
+            }
+
+            function qrSizeBytes(qr) {
+                if (!qr) return "---";
+                return Math.round((qr.modules.size*qr.modules.size)/8)
+            }
+
+            function qrSizeBits(qr) {
+                if (!qr) return "--x--";
+                return qr.modules.size + "x" + qr.modules.size;
+            }
+
+            function qrSizeMillimiters(qr, dpi) {
+                if (!qr) return "--x--";
+                // 150 DPI Printer
+                // 3x3 printer dots per QR bit.
+                const side = Math.round(qr.modules.size * (25.4/(dpi/3)));
+                return side + "x" + side;
+            }
+
+            function buildCREDArray() {
+                var issue = new Date();
+                var expiration = new Date(issue);
+                expiration.setMonth(expiration.getMonth()+parseInt(e("qr-cert-exp").value));
+
+                let dgcArray = getValueArray(
+                    ["qr-subject-nam-fn", "qr-subject-nam-gn", "qr-subject-nam-fnt", "qr-subject-nam-gnt", "qr-subject-dob-days"], issue);
+
+                dgcArray.push(dateInSecondsToEpoch(issue, new Date(0)));
+                dgcArray.push(dateInSecondsToEpoch(expiration, issue));
+                dgcArray.push(e("qr-cert-iss").value);
+
+                // vaccination, testing and recovery in order
+                let vaxNumber = 0;
+                if (e('qr-vax-first-include').checked)  { vaxNumber++; }
+                if (e('qr-vax-second-include').checked) { vaxNumber++; }
+
+                let testNumber = 0;
+                if (e('qr-test-first-include').checked) { testNumber++; }
+                if (e('qr-test-second-include').checked) { testNumber++; }
+
+                let recovNumber = 0;
+                if (e('qr-recov-include').checked) { recovNumber++ }
+
+                dgcArray.push(vaxNumber.toString());
+
+                if (e('qr-vax-first-include').checked) {
+                    const firstVaccineArray = getValueArray(["qr-vax-first-tg-numToB32", "qr-vax-first-vp", "qr-vax-first-mp", "qr-vax-first-ma", "qr-vax-first-dn", "qr-vax-first-sd", "qr-vax-first-dt-days", "qr-vax-first-co", "qr-vax-first-is", "qr-vax-first-ci"], issue);
+                    Array.prototype.push.apply(dgcArray, firstVaccineArray);
+                }
+                if (e('qr-vax-second-include').checked) {
+                    const secondVaccineArray = getValueArray(["qr-vax-second-tg-numToB32", "qr-vax-second-vp", "qr-vax-second-mp", "qr-vax-second-ma", "qr-vax-second-dn", "qr-vax-second-sd", "qr-vax-second-dt-days", "qr-vax-second-co", "qr-vax-second-is", "qr-vax-second-ci"], issue);
+                    Array.prototype.push.apply(dgcArray, secondVaccineArray);
+                }
+
+                dgcArray.push(testNumber.toString());
+
+                if (e('qr-test-first-include').checked) {
+                    const firstTestArray = getValueArray(["qr-test-first-tg-numToB32", "qr-test-first-tt", "qr-test-first-nm", "qr-test-first-ma", "qr-test-first-sc-timestamp", "qr-test-first-tr", "qr-test-first-tc", "qr-test-first-co", "qr-test-first-is", "qr-test-first-ci"], issue);  
+                    Array.prototype.push.apply(dgcArray, firstTestArray);
+                }
+                if (e('qr-test-second-include').checked) {
+                    const secondTestArray = getValueArray(["qr-test-second-tg-numToB32", "qr-test-second-tt", "qr-test-second-nm", "qr-test-second-ma", "qr-test-second-sc-timestamp", "qr-test-second-tr", "qr-test-second-tc", "qr-test-second-co", "qr-test-second-is", "qr-test-second-ci"], issue);  
+                    Array.prototype.push.apply(dgcArray, secondTestArray);
+                }
+
+                dgcArray.push(recovNumber.toString());
+
+                if (e('qr-recov-include').checked) {
+                    const recoveryArray = getValueArray(["qr-recov-tg-numToB32", "qr-recov-fr-days", "qr-recov-df-days", "qr-recov-du-days", "qr-recov-co", "qr-recov-is", "qr-recov-ci"], issue);
+                    Array.prototype.push.apply(dgcArray, recoveryArray);
+                }
+
+                return dgcArray;
+            }
+
+            function buildHC1() {
+                let dgcHC1 = { 
+                    "ver": "1.3.0",
+                    "nam": {
+                        "fn": e('qr-subject-nam-fn').value,
+                        "gn": e('qr-subject-nam-gn').value,
+                        "fnt": e('qr-subject-nam-fnt').value,
+                        "gnt": e('qr-subject-nam-gnt').value,
+                    },
+                    "dob": e('qr-subject-dob-days').value
+                };
+
+                if (e('qr-recov-include').checked) {
+                    dgcHC1["r"] = [
+                        {     
+                            "tg": e('qr-recov-tg-numToB32').value,
+                            "fr": e('qr-recov-fr-days').value,
+                            "df": e('qr-recov-df-days').value,
+                            "du": e('qr-recov-du-days').value,
+                            "co": e('qr-recov-co').value,
+                            "is": e('qr-recov-is').value,
+                            "ci": "urn:uvci:"+e('qr-recov-ci').value
+                        }
+                    ];
+                }
+
+                if (e('qr-vax-first-include').checked || e('qr-vax-second-include').checked)  {
+                    dgcHC1["v"] = [];
+                } 
+
+                if (e('qr-vax-first-include').checked) {
+                    dgcHC1["v"].push({
+                            "tg": e('qr-vax-first-tg-numToB32').value,
+                            "vp": e('qr-vax-first-vp').value,
+                            "mp": e('qr-vax-first-mp').value,
+                            "ma": e('qr-vax-first-ma').value,
+                            "dn": parseInt(e('qr-vax-first-dn').value),
+                            "sd": parseInt(e('qr-vax-first-sd').value),
+                            "dt": e('qr-vax-first-dt-days').value,
+                            "co": e('qr-vax-first-co').value,
+                            "is": e('qr-vax-first-is').value,
+                            "ci": "urn:uvci:"+e('qr-vax-first-ci').value
+                        });
+                }
+
+                if (e('qr-vax-second-include').checked) {
+                    dgcHC1["v"].push({
+                            "tg": e('qr-vax-second-tg-numToB32').value,
+                            "vp": e('qr-vax-second-vp').value,
+                            "mp": e('qr-vax-second-mp').value,
+                            "ma": e('qr-vax-second-ma').value,
+                            "dn": parseInt(e('qr-vax-second-dn').value),
+                            "sd": parseInt(e('qr-vax-second-sd').value),
+                            "dt": e('qr-vax-second-dt-days').value,
+                            "co": e('qr-vax-second-co').value,
+                            "is": e('qr-vax-second-is').value,
+                            "ci": "urn:uvci:"+e('qr-vax-second-ci').value
+                        });
+                }
+
+                if (e('qr-test-first-include').checked || e('qr-test-second-include').checked)  {
+                    dgcHC1["t"] = [];
+                } 
+
+                if (e('qr-test-first-include').checked) {
+                    dgcHC1["t"].push({
+                            "tg": e('qr-test-first-tg-numToB32').value,
+                            "tt": e('qr-test-first-tt').value,
+                            "tr": e('qr-test-first-tr').value,
+                            "nm": e("qr-test-first-nm").value,
+                            "ma": e('qr-test-first-ma').value,
+                            "sc": e('qr-test-first-sc-timestamp').value,
+                            "tc": e('qr-test-first-tc').value,
+                            "co": e('qr-test-first-co').value,
+                            "is": e('qr-test-first-is').value,
+                            "ci": "urn:uvci:"+e('qr-test-first-ci').value
+                        });
+                }
+
+                if (e('qr-test-second-include').checked) {
+                    dgcHC1["t"].push({
+                            "tg": e('qr-test-second-tg-numToB32').value,
+                            "tt": e('qr-test-second-tt').value,
+                            "tr": e('qr-test-second-tr').value,
+                            "nm": e("qr-test-second-nm").value,
+                            "ma": e('qr-test-second-ma').value,
+                            "sc": e('qr-test-second-sc-timestamp').value,
+                            "tc": e('qr-test-second-tc').value,
+                            "co": e('qr-test-second-co').value,
+                            "is": e('qr-test-second-is').value,
+                            "ci": "urn:uvci:"+e('qr-test-second-ci').value
+                        });
+                }
+                return removeEmpty(dgcHC1);
+            }
+
+            function buildVerifiableCredential() {
+                let iss = new Date();
+                let exp = new Date(iss);
+                exp.setMonth(exp.getMonth()+parseInt(e("qr-cert-exp").value));
+
+                let dgcVC = {
+                    "@context": [
+                        "https://www.w3.org/2018/credentials/v1",
+                        "https://w3id.org/dgc/v1"
+                    ],
+                    "type": [
+                        "VerifiableCredential"
+                    ],
+                    "issuanceDate": iss.toISOString().replace(/....Z$/, "Z"),
+                    "expirationDate": exp.toISOString().replace(/....Z$/, "Z"),
+                    "credentialSubject": {
+                        "@context": [
+                            "https://w3id.org/dgc/v1"
+                        ],
+                        "type": "DGCCertificate",
+                        "personalInformation": {
+                            "@context": [
+                                "https://w3id.org/dgc/v1"
+                            ],
+                            "type": "DGCSubject",
+                            "familyName": e('qr-subject-nam-fn').value,
+                            "givenName": e('qr-subject-nam-gn').value,
+                            "stdFamilyName": e('qr-subject-nam-fnt').value,
+                            "stdGivenName": e('qr-subject-nam-gnt').value,
+                            "birthDate": e('qr-subject-dob-days').value
+                        }
+                    }
+                };
+
+                if (e('qr-recov-include').checked) {
+                    dgcVC["credentialSubject"]["proofOfRecovery"] = [
+                        {
+                            "@context": [
+                                "https://w3id.org/dgc/v1"
+                            ],
+                            "type": "DGCProofOfRecovery",
+                            "id": "urn:uvci:"+e('qr-recov-ci').value,
+                            "issuerName": e('qr-recov-is').value,
+                            "countryOfTest": e('qr-recov-co').value, 
+                            "infectionInformation": {
+                                "@context": [
+                                    "https://w3id.org/dgc/v1"
+                                ],
+                                "type": "DGCInfectionInformation",
+                                "diseaseRecoveredFrom": e('qr-recov-tg-numToB32').value,
+                                "dateFirstPositive": e('qr-recov-fr-days').value,
+                                "validFrom": e('qr-recov-df-days').value,
+                                "validUntil": e('qr-recov-du-days').value
+                            },
+                        }
+                    ];
+                }
+
+                if (e('qr-vax-first-include').checked || e('qr-vax-second-include').checked)  {
+                    dgcVC["credentialSubject"]["proofOfVaccination"] = [];
+                } 
+
+                if (e('qr-vax-first-include').checked) {
+                    dgcVC["credentialSubject"]["proofOfVaccination"].push(
+                        {
+                            "@context": [
+                                "https://w3id.org/dgc/v1"
+                            ],
+                            "type": "DGCProofOfVaccination",
+                            "id": "urn:uvci:"+e('qr-vax-first-ci').value, 
+                            "issuerName": e('qr-vax-first-is').value,
+                            "countryOfVaccination": e('qr-vax-first-co').value,
+                            "vaccinationInformation": {
+                                "@context": [
+                                    "https://w3id.org/dgc/v1"
+                                ],
+                                "type": "DGCVaccinationInformation",
+                                "diseaseProtectedFrom": e('qr-vax-first-tg-numToB32').value,
+                                "prophylaxis": e('qr-vax-first-vp').value,
+                                "dateOfVaccination": e('qr-vax-first-dt-days').value,
+                                "dose": parseInt(e('qr-vax-first-dn').value), 
+                                "totalDoses": parseInt(e('qr-vax-first-sd').value),
+                                "marketingAuthHolder": e('qr-vax-first-ma').value,
+                                "medicinalProductName": e('qr-vax-first-mp').value
+                            },
+                        });
+                }
+
+                if (e('qr-vax-second-include').checked) {
+                    dgcVC["credentialSubject"]["proofOfVaccination"].push(
+                        {
+                            "@context": [
+                                "https://w3id.org/dgc/v1"
+                            ],
+                            "type": "DGCProofOfVaccination",
+                            "id": "urn:uvci:"+e('qr-vax-second-ci').value, 
+                            "issuerName": e('qr-vax-second-is').value,
+                            "countryOfVaccination": e('qr-vax-second-co').value,
+                            "vaccinationInformation": {
+                                "@context": [
+                                    "https://w3id.org/dgc/v1"
+                                ],
+                                "type": "DGCVaccinationInformation",
+                                "diseaseProtectedFrom": e('qr-vax-second-tg-numToB32').value,
+                                "prophylaxis": e('qr-vax-second-vp').value,
+                                "dateOfVaccination": e('qr-vax-second-dt-days').value,
+                                "dose": parseInt(e('qr-vax-second-dn').value), 
+                                "totalDoses": parseInt(e('qr-vax-second-sd').value),
+                                "marketingAuthHolder": e('qr-vax-second-ma').value,
+                                "medicinalProductName": e('qr-vax-second-mp').value
+                            },
+                        });
+                }
+
+                if (e('qr-test-first-include').checked || e('qr-test-second-include').checked)  {
+                    dgcVC["credentialSubject"]["proofOfCovidTest"] = [];
+                } 
+
+                if (e('qr-test-first-include').checked) {
+                    dgcVC["credentialSubject"]["proofOfCovidTest"].push({
+                            "@context": [
+                                "https://w3id.org/dgc/v1"
+                            ],
+                            "type": "DGCProofOfCovidTest",
+                            "id": "urn:uvci:"+e('qr-test-first-ci').value,
+                            "issuerName": e('qr-test-first-is').value,
+                            "countryOfTestAdminstration": e('qr-test-first-co').value, 
+                            "testInformation": {
+                                "@context": [
+                                    "https://w3id.org/dgc/v1"
+                                ],
+                                "type": "DGCTestInformation",
+                                "diseaseTestedFrom": e("qr-test-first-tg-numToB32").value,
+                                "testName": e("qr-test-first-nm").value,
+                                "testManufacturer": e("qr-test-first-ma").value,
+                                "testType": e('qr-test-first-tt').value,
+                                "sampleCollectionDateTime": e('qr-test-first-sc-timestamp').value,
+                                "testResult": e('qr-test-first-tr').value,
+                                "testCenter": e('qr-test-first-tc').value
+                            },
+                        });
+                }
+
+                if (e('qr-test-second-include').checked) {
+                    dgcVC["credentialSubject"]["proofOfCovidTest"].push({
+                            "@context": [
+                                "https://w3id.org/dgc/v1"
+                            ],
+                            "type": "DGCProofOfCovidTest",
+                            "id": "urn:uvci:"+e('qr-test-second-ci').value,
+                            "issuerName": e('qr-test-second-is').value,
+                            "countryOfTestAdminstration": e('qr-test-second-co').value, 
+                            "testInformation": {
+                                "@context": [
+                                    "https://w3id.org/dgc/v1"
+                                ],
+                                "type": "DGCTestInformation",
+                                "diseaseTestedFrom": e("qr-test-second-tg-numToB32").value,
+                                "testName": e("qr-test-second-nm").value,
+                                "testManufacturer": e("qr-test-second-ma").value,
+                                "testType": e('qr-test-second-tt').value,
+                                "sampleCollectionDateTime": e('qr-test-second-sc-timestamp').value,
+                                "testResult": e('qr-test-second-tr').value,
+                                "testCenter": e('qr-test-second-tc').value
+                            },
+                        });
+                }
+
+                return removeEmpty(dgcVC);
+            }
+
+            function buildBBSVC() {
+                let dgcVC = buildVerifiableCredential(); 
+                dgcVC["issuer"] = e("bbs-controller").value,
+                dgcVC["@context"].push("https://w3id.org/security/bbs/v1");
+                return dgcVC;
+            }
+
+            function buildEDDSAVC() {
+                let dgcVC = buildVerifiableCredential(); 
+                dgcVC["issuer"] = e("eddsa-controller").value,
+                dgcVC["@context"].push("https://w3id.org/security/suites/ed25519-2020/v1");
+                return dgcVC;
+            }
+
+            function buildRSAVC() {
+                let dgcVC = buildVerifiableCredential(); 
+                return dgcVC;
+            }
+
+            function generateQRCodes() {
+                gtag('event', 'generateQR');
+
+                clear(payloads, compressionAlgos);
+
+                // Where to Download the public key
+                const pubKeyLink = e("qr-link").value.trim().replace("http://","");
+
+                // PEM code of the private key
+                const priKeyPEM = e('privkey').value;
+
+                const dgcArray = buildCREDArray();
+            
+                // PEM code of the private key
+                const priKeyEUPEM = e('privkeyEU').value;
+                const pubKeyEUPEM = e('pubkeyEU').value;
+
+                const keyPair = {
+                    id: e("bbs-key-id").value,
+                    controller: e("bbs-controller").value,
+                    privateKeyBase58: e("bbs-privkey").value,
+                    publicKeyBase58: "oqpWYKaZD9M1Kbe94BVXpr8WTdFBNZyKv48cziTiQUeuhm7sBhCABMyYG4kcMrseC68YTFFgyhiNeBKjzdKk9MiRWuLv5H4FFujQsQK2KTAtzU8qTBiZqBHMmnLF4PL7Ytu"
+                }
+
+                const keyPairED = {
+                    id: e("eddsa-key-id").value,
+                    type: "Ed25519VerificationKey2020",
+                    controller: e("eddsa-controller").value,
+                    publicKeyMultibase: "zGhTGvJH58518mWd5PAWnAVLx3dArnmQNmPqhhqmhuEsz",
+                    privateKeyMultibase: e("eddsa-privkey").value,
+                }
+
+                const shcKeys = {
+                    "kty": "EC",
+                    "kid": "RtNFRifHI_nsVNYwpZbB8i0ZqBsjtAI_sjCiyh8fzV8",
+                    "use": "sig",
+                    "alg": "ES256",
+                    "x5c": [],
+                    "crv": "P-256",
+                    "x": "-YrUDl5O6LBdmVEEfxw4Ml5trO3IuAzeCnASbxSYowc",
+                    "y": "E67zIYdV78qz-xAn0dIc0vQWzYEn9RG6OUN2RIL6GQo",
+                    "d": "XI7SFgM8Attzb0Kxa145OxgfjjezmGpHd3AhE2PePlA"
+                }    
+
+                const dgcHC1 = buildHC1(); 
+                const dgcBBS = buildBBSVC(); 
+                const dgcEDDSA = buildEDDSAVC(); 
+                const dgcDIVOC = buildRSAVC(); 
+
+                signAndDisplayQR("qr-dgc-cred", "dgc","1", priKeyPEM, pubKeyLink, dgcArray);
+                signAndDisplayEUQR("qr-dgc-orig", dgcHC1, priKeyEUPEM, pubKeyEUPEM);
+                signAndDisplayQRCBLD("qr-dgc-cbld", dgcBBS, keyPair);
+                signAndDisplayQRJSON("qr-dgc-raw", dgcBBS, keyPair);
+                signAndDisplayQRJXT("qr-dgc-jxt", "pcf.pw", "dgc", "1", dgcBBS, keyPair);
+                signAndDisplayQREDJXT("qr-dgc-ed-jxt", "pcf.pw", "dgc", "2", dgcEDDSA, keyPairED);
+                signAndDisplayQRDIVOC("qr-dgc-divoc", dgcDIVOC);
+                signAndDisplayQRSHC("qr-dgc-shc", dgcDIVOC, shcKeys, "https://pcf.pw");
+            }
+
+            function getEUPayload(cwt) {
+                if (cwt instanceof Map) {
+                    return cwt.get(-260).get(1);
+                } 
+                return cwt;
+            }
+
+            function schemaValidator() {
+                var ajv = new ajv7.default({strict: "log", validateFormats: false});
+
+                let client = new XMLHttpRequest();
+                client.open('GET', 'https://raw.githubusercontent.com/ehn-digital-green-development/ehn-dgc-schema/main/DCC.combined-schema.json', false);
+                client.setRequestHeader("Accept", "application/vnd.github.v3+json");
+                client.send();
+
+                const schema = JSON.parse(client.response); 
+                delete schema['$schema'];
+                return ajv.compile(schema);
+            }
+            
+            function verifyQRCode() {
+                gtag('event', 'verifyQR');
+                if (e("qr-verify").value.startsWith('CRED:')) {
+                    PCFUtils.debugParseURI(e("qr-verify").value).then(result => {
+                        e("qr-verify-result").innerHTML = result;
+                    });
+                    PCFUtils.debugVerify(e("qr-verify").value).then(debug => {
+                        e('qr-verify-verified').innerHTML = debug;
+                    });
+                } else {
+                    e("qr-verify-result").innerHTML = "Checking";
+                    DCC.unpackAndVerify(e("qr-verify").value, e('pubkeyEU').value).then(verificationResult => {
+                        const validator = schemaValidator();
+                        const valid = validator(getEUPayload(verificationResult.contents));
+                        if (verificationResult.status == "verified") {
+                            e("qr-verify-result").innerHTML = "Data: " + he.encode(beautify(getEUPayload(verificationResult.contents), replacer, 2, 80));
+                            e('qr-verify-verified').innerHTML = "Signature Verified " + (valid? " and Schema is Valid" : " but Schema has errors " + JSON.stringify(validator.errors));
+                        } else {
+                            e('qr-verify-verified').innerHTML = "Could not Verify";
+                        }
+                    });
+                }
+            }
+        </script>
+        
+        <script>
+            function fillTo(str, toSize) {
+                let missing = toSize - str.length;
+                if (missing == 0) return str;
+                return fillTo(str + Math.random().toString(36).replace(/[^a-z]+/g, '').substr(0, missing), toSize);
+            }
+
+            function loadDemo() {
+                e("qr-subject-nam-fn").value = "d'Arsøns - van Halen";
+                e("qr-subject-nam-gn").value = "François-Joan";
+                e("qr-subject-nam-fnt").value = "DARSONS<VAN<HALEN";
+                e("qr-subject-nam-gnt").value = "FRANCOIS<JOAN";
+                e("qr-subject-dob-days").value = "2009-02-28";
+
+                e("qr-cert-iat").value = "<Automatic>";
+                e("qr-cert-exp").value = 48;
+                e("qr-cert-iss").value = "NL";
+               
+                e("qr-vax-first-tg-numToB32").value = "840539006";
+                e("qr-vax-first-vp").value = "1119349007";
+                e("qr-vax-first-mp").value = "EU/1/20/1528";
+                e("qr-vax-first-ma").value = "ORG-100030215";
+                e("qr-vax-first-dn").value = "1";
+                e("qr-vax-first-sd").value = "2";
+                e("qr-vax-first-dt-days").value = "2021-05-05";
+                e("qr-vax-first-co").value = "NL";
+                e("qr-vax-first-is").value = "Ministry of VWS";
+                e("qr-vax-first-ci").value = "01:NL:PLA8UWS60Z4RZXVALL6GAZ";
+
+                e("qr-vax-second-tg-numToB32").value = "840539006";
+                e("qr-vax-second-vp").value = "1119349007";
+                e("qr-vax-second-mp").value = "EU/1/20/1528";
+                e("qr-vax-second-ma").value = "ORG-100030215";
+                e("qr-vax-second-dn").value = "2";
+                e("qr-vax-second-sd").value = "2";
+                e("qr-vax-second-dt-days").value = "2021-05-25";
+                e("qr-vax-second-co").value = "NL";
+                e("qr-vax-second-is").value = "Ministry of VWS";
+                e("qr-vax-second-ci").value = "01:NL:ATS342XDYS358FDFH3GTK5";
+
+                e("qr-test-first-tg-numToB32").value = "840539006";
+                e("qr-test-first-tt").value = "LP217198-3";
+                e("qr-test-first-nm").value = "COVID PCR";
+                e("qr-test-first-ma").value = "1232";
+                e("qr-test-first-sc-timestamp").value = "2021-02-13T14:20:00Z";
+                e("qr-test-first-tr").value = "260415000";
+                e("qr-test-first-tc").value = "GGD Fryslân, L-Heliconweg";
+                e("qr-test-first-co").value = "NL";
+                e("qr-test-first-is").value = "Ministry of VWS";
+                e("qr-test-first-ci").value = "01:NL:GGD/81AAH16AZ";
+
+                e("qr-test-second-tg-numToB32").value = "840539006";
+                e("qr-test-second-tt").value = "LP6464-4";
+                e("qr-test-second-nm").value = "NAAT TEST";
+                e("qr-test-second-ma").value = "1343";
+                e("qr-test-second-sc-timestamp").value = "2021-04-05T10:10:00Z";
+                e("qr-test-second-tr").value = "260373001";
+                e("qr-test-second-tc").value = "Alphen a/d Rijn";
+                e("qr-test-second-co").value = "NL";
+                e("qr-test-second-is").value = "Ministry of VWS";
+                e("qr-test-second-ci").value = "01:NL:GGD/23BBS36BC";
+
+                e("qr-recov-tg-numToB32").value = "840539006";
+                e("qr-recov-fr-days").value = "2021-04-21";
+                e("qr-recov-df-days").value = "2021-05-01";
+                e("qr-recov-du-days").value = "2021-10-21";
+                e("qr-recov-co").value = "NL";
+                e("qr-recov-is").value = "Ministry of VWS";
+                e("qr-recov-ci").value = "01:NL:LSP/REC/1289821";
+            }
+
+            loadDemo();
+
+            qrModes = [
+                {id:"header", label:"Tech"},
+                {id:"eccl", label:"ECC 7%"},
+                {id:"eccm", label:"ECC 15%"},
+                {id:"eccq", label:"ECC 25%"},
+                {id:"ecch", label:"ECC 30%"}
+            ];
+
+            qrTimeBytes = [
+                {id:"header", label:"Tech"},
+                {id:"uri", label:"URI Bytes"},
+                {id:"json", label:"URI Chars"},
+                {id:"sign", label:"Sign Time"},
+                {id:"verify", label:"Verify Time"}
+            ];
+
+            compressionAlgos = [
+                {id:"ed-jxt", label:"ED JXT"}, 
+                {id:"jxt", label:"BBS JXT"}, 
+                {id:"cred", label:"CRED"}, 
+                {id:"orig", label:"HC1"}, 
+                {id:"cbld", label:"CBLD"},
+                {id:"shc", label:"SHC"},
+                {id:"divoc", label:"Divoc"},
+                {id:"raw", label:"RAW"}
+            ];
+
+            payloads = [
+                {id:"dgc", label:""}
+            ];
+
+            metrics = [
+                {id:"time", label:"URI Size (in bytes and in chars) and Time (in milliseconds)", over: qrTimeBytes}, 
+                {id:"comp", label:"QR Size in Bytes (bits * bits / 8)", over: qrModes},
+                {id:"bits", label:"QR Size (bits x bits)", over: qrModes},
+                {id:"size", label:"Minimum Printed Size (in millimiters at 150 DPI)", over: qrModes},
+                {id:"size300", label:"Minimum Printed Size (in millimiters at 300 DPI)", over: qrModes}
+            ];
+
+            e('comparison').innerHTML = UIComp.init(payloads, compressionAlgos, metrics);
+        </script>
+
+        <script>
+            async function preloadKey() {
+                let cache = {}
+                cache[e('qr-linkEU').value] = e('pubkeyEU').value.replace("-----BEGIN CERTIFICATE-----", "").replace("-----END CERTIFICATE-----", "").replace(/\n/g,'');
+                DCC.addCachedCerts(cache);
+
+                CRED.resolveKey(e("qr-link").value);
+            }
+            window.onload = function() {
+                preloadKey();
+            }
+        </script>
+	</body>
+</html>
+
+

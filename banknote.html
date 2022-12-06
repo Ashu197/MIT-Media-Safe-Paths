@@ -1,0 +1,259 @@
+<!doctype html>
+	<head>
+        <meta charset="UTF-8">
+		<link rel="stylesheet" href="css/style.v2.css">
+        <link rel="stylesheet" href="css/topnav.css">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="shortcut icon" href="https://www.pathcheck.org/hubfs/Favicon.png">
+		<title>Banknote Signed Certificate Proposal</title>
+
+        <!-- Global site tag (gtag.js) - Google Analytics -->
+        <script async src="https://www.googletagmanager.com/gtag/js?id=G-DTDMHW3NV6"></script>
+        <script>
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+            gtag('config', 'G-DTDMHW3NV6');
+        </script>
+	</head>
+	<body>
+        <div class="topnav">
+            <div class="topnavContainer">
+              <a class="active" href="index.html">Signers</a>
+              <a href="verify.html"><span class="xs-hidden">Universal </span>Verifier</a>
+              <a class="xs-hidden" href="debug.html">QR Debugger</a>
+              <a class="xs-hidden" href="https://github.com/Path-Check/paper-cred-demo">Source Code</a>
+              <a href="https://github.com/Path-Check/paper-cred"><span class="xs-hidden"> QR </span>Specs</a>
+              <a href="http://vaccine-docs.pathcheck.org"><span class="xs-hidden">Vaccine </span>Docs</a>
+              <a class="xs-hidden" href="http://pathcheck.org">About PathCheck</a>
+            </div>
+        </div>
+      
+        <div class="subnav">
+            <div class="subnavContainer">
+                <a href="index.v5.html">PCF<span class="xs-hidden">'s 4 QRs</span></a>
+                <a href="eu.dgc.html">EU<span class="xs-hidden"> Covid Pass</span></a>
+                <a href="icao.html">ICAO<span class="xs-hidden"> Seals</span></a>
+                <a href="cowin.html">DIVOC<span class="xs-hidden">/India</span></a>
+                <a class="xs-hidden" href="opencerta.html"><span class="xs-hidden">Open</span>Certa</a>
+                <a href="vial.html">Vial<span class="xs-hidden"> Label</span></a>
+                <a href="us.ma.id.html"><span class="xs-hidden">Mass </span>ID</a>
+                <a class="active" href="banknote.html">Cash<span class="xs-hidden"> Bills</span></a>
+            </div>
+        </div>
+
+        <div class="center">
+            <h1>Verifiable Banknote</h1>
+            <div class="full-div">
+                <div class="two-quarter">
+                    <h4>Note Information</h4>
+                    <table>
+                        <tr><td>Issuing Country</td><td><input id="qr-country" type="text" placeholder="United States of America"/></td></tr>
+                        <tr><td>Issuing Authority</td><td><input id="qr-issuer" type="text" placeholder="Federal Reserve"/></td></tr>
+                        <tr><td>Issuing Date</td><td><input id="qr-date" type="text" placeholder="YYYYMMDD"/></td></tr>
+                        <tr><td>Series Year</td><td><input id="qr-lot-year" type="text" placeholder="2009 A"/></td></tr>
+                        <tr><td>Serial #</td><td><input id="qr-serial" type="text" placeholder="IE 25507922C"/></td></tr>
+                        
+                        <tr><td>Denomination</td><td><input id="qr-denomination" type="text" placeholder="10.00"/></td></tr>
+                        <tr><td>Currency Name</td><td><input id="qr-currency-name" type="text" placeholder="Dollar"/></td></tr>
+                    </table>
+
+                    <h4>Printing & Distribution Information</h4>
+                    <table>
+                        <tr><td>FED Bank #</td><td><input id="qr-indicator" type="text" placeholder="E12"/></td></tr>
+                        <tr><td>Face Plate #</td><td><input id="qr-face-plate-number" type="text" placeholder="FW E 103"/></td></tr>
+                        <tr><td>Back Plate #</td><td><input id="qr-back-plate-number" type="text" placeholder="437"/></td></tr>
+                        <tr><td>Note Position</td><td><input id="qr-position" type="text" placeholder="5E"/></td></tr>
+                    </table> 
+                </div>
+                <div class="two-quarter">
+                    <h4>Design Restrictions</h4>
+                    <ul>
+                        <li>QR must fit a 10x10mm area on a bank note</li>
+                        <li>QR must contain all the fields of the note</li>
+                        <li>Must be readable by a regular phone</li>
+                    </ul>
+                    
+                    <h4>Benefits</h4>
+                    <ul>
+                        <li>Counterfeiters can only duplicate notes (changing serial number breaks the signature)</li>
+                        <li>Duplicated serial # are easier to track down</li>
+                        <li>Build a "Revocation List" for individual numbers</li>
+                    </ul>
+                    <a href="https://www.uscurrency.gov/sites/default/files/denominations/note-indicators/serialno_seriesyr_web.jpg"><img width=90% src="https://www.uscurrency.gov/sites/default/files/denominations/note-indicators/serialno_seriesyr_web.jpg" /></a> 
+                </div>
+                
+                <div class="quarter">
+                    <h4>Credentials</h4>
+                    <label for="privkey">Private Key</label><br/>
+<textarea id="privkey" rows="10" style="width: 100%;">-----BEGIN EC PARAMETERS-----
+BgUrgQQACg==
+-----END EC PARAMETERS-----
+-----BEGIN EC PRIVATE KEY-----
+MHQCAQEEIPWKbSezZMY1gCpvN42yaVv76Lo47FvSsVZpQl0a5lWRoAcGBSuBBAAK
+oUQDQgAE6DeIun4EgMBLUmbtjQw7DilMJ82YIvOR2jz/IK0R/F7/zXY1z+gqvFXf
+DcJqR5clbAYlO9lHmvb4lsPLZHjugQ==
+-----END EC PRIVATE KEY-----</textarea>
+                    <br><br>
+                    <label for="pubkey">Public Key</label><br/>
+                    <textarea id="qr-link" rows="1" cols="30">1A9.PCF.PW</textarea>
+                </div>
+            </div>
+            <div class="four-quarter">
+                <br>
+                <button class="qr-btn" onclick="generateQRCodes()">Create Certificates</button>
+            </div>
+            <div class="full-div">
+                <div class="two-quarter">
+                    <h4 id="qr-banknote-code-label">QR Format</h4>
+                    <canvas id="qr-banknote-code"></canvas><br/>
+                </div>
+                <div class="two-quarter">
+                    <h4 id="qr-banknote-pdf-label">PDF 417 Format</h4>
+                    <canvas id="qr-banknote-pdf"></canvas><br/>
+                </div>
+                <div class="quarter xs-hidden">
+                    <label for="verify">Verify a QR Code</label>
+                    <textarea id="qr-verify" rows="10" cols="33" placeholder="cred:type:version:signature:pubkey:payload"></textarea>
+                    <br><br>
+                    <button class="qr-btn" onclick="verifyQRCode()">Verify</button>
+                    <br><br>
+                    <pre>cred:<span class='protocol'>type:version</span>:<span class='signature'>Signature</span>:<span class='pub-key'>PubKey</span>:<span class='message'>Payload</span></pre>
+                    <pre id="qr-verify-result"></pre>
+                </div>
+            </div>
+            <div class="full-div">
+                <div class="two-quarter">
+                    <pre id="qr-banknote-result"></pre>
+                    <pre id="qr-banknote-bytes" class="xs-hidden"></pre>
+                </div>
+                <div class="two-quarter"></div>
+                <div class="quarter"></div>
+            </div>
+        </div>
+        
+        <div class="footer">
+            <div class="footerContainer">
+              <img src="https://www.pathcheck.org/hubfs/pathcheck-foundation-logo-white.svg" alt="pathcheck-foundation-logo-white" width="264" style="width: 264px; max-width: 264px; margin: 0px 0px 5px;">
+              <span style="font-size: 14px;"> 
+                <br>©2021. PathCheck Foundation – a 501(c)(3) nonprofit.
+                <br>Content is distributed under the Creative Commons CC-BY License unless otherwise stated. PathCheck is a trademark of PathCheck Foundation.
+              </span>
+              
+            </div>
+        </div>
+        
+        <script src="js/qrcode.min.js"></script>
+
+        <script src="js/libbcmath.js" type="text/javascript"></script>
+        <script src="js/bcmath.js" type="text/javascript"></script>
+        <script src="js/pdf417.js" type="text/javascript"></script>
+
+        <script src="js/cred-sdk.min.js"></script>
+
+        <script src="js/pcf-utils.js"></script>
+        <script src="js/ui-utils.js"></script>
+
+		<script>
+            function e(elem) { return document.getElementById(elem); }
+
+            function getValueArray(elemArray) {
+                const fields = elemArray.map(function(elemId) {
+                    return e(elemId).value;
+                })
+                return fields;
+            }
+
+            function clearQR(elemPrefix) {
+                e(elemPrefix+'-code').getContext('2d').clearRect(0, 0, e(elemPrefix+'-code').width, e(elemPrefix+'-code').height);
+                e(elemPrefix+'-result').innerHTML = "";
+                e(elemPrefix+'-bytes').innerHTML = "";
+            }
+
+            async function clear() {
+                clearQR('qr-banknote');
+            }
+
+            function signAndDisplayQR(elemPref, _type, _version, priKeyPEM, pubKeyId, payloadValueArray) {
+                CRED.signAndPack(_type, _version, priKeyPEM, pubKeyId, payloadValueArray).then(uri => {
+                    PCFUtils.debugURI(uri).then( debugInfo => {
+                        UIUtils.drawsQR(elemPref, uri, debugInfo);
+
+                        CRED.unpackAndVerify(uri).then(result => {
+                            UIUtils.drawVerifiedSymbol(elemPref+'-code',result);
+                        });
+                    });
+                });
+            }
+
+            function generateQRCodes() {
+                gtag('event', 'generateQR');
+                clear();
+
+                // Where to Download the public key
+                const pubKeyLink = e("qr-link").value.trim().replace("http://","");
+
+                // PEM code of the private key
+                const priKeyPEM = e('privkey').value;
+
+                const valueArray = [
+                    "qr-country",
+                    "qr-issuer", "qr-date", "qr-lot-year", "qr-serial", 
+                    "qr-denomination", "qr-currency-name", "qr-indicator", 
+                    "qr-face-plate-number", "qr-back-plate-number", "qr-position"
+                ];
+
+                signAndDisplayQR("qr-banknote", "banknote", "1", priKeyPEM, pubKeyLink, getValueArray(valueArray));
+            }
+
+            function verifyQRCode() {
+                gtag('event', 'verifyQR');
+                PCFUtils.debugParseURI(e("qr-verify").value).then(result => {
+                    e("qr-verify-result").innerHTML = result;
+                });
+                PCFUtils.debugVerify(e("qr-verify").value).then(debug => {
+                    e('qr-verify-verified').innerHTML = debug;
+                });
+            }
+
+            function onScanSuccess(qrMessage) {
+                e("qr-verify").value = qrMessage;
+                verifyQRCode();
+            }
+
+            function onScanFailure(error) {
+                // handle scan failure, usually better to ignore and keep scanning
+                console.warn(`QR error = ${error}`);
+            }
+        </script>
+        
+        <script>
+            function loadDemo() {
+                e("qr-country").value = "United States of America";
+                e("qr-issuer").value = "Federal Reserve";
+                e("qr-date").value = "";
+                e("qr-lot-year").value = "2006";
+                e("qr-serial").value = "IE 25507922C";
+                e("qr-denomination").value = "5.00";
+                e("qr-currency-name").value = "Dollar";
+                e("qr-indicator").value = "E5";
+                e("qr-face-plate-number").value = "FWH103";
+                e("qr-back-plate-number").value = "437";
+                e("qr-position").value = "H4";
+            }
+
+            loadDemo();
+        </script>
+
+        <script>
+            async function preloadKey() {
+                CRED.resolveKey(e("qr-link").value);
+            }
+            window.onload = function() {
+                preloadKey();
+            }
+        </script>
+	</body>
+</html>
+
+
